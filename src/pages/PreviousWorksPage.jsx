@@ -1,18 +1,17 @@
-// src/pages/LearnMorePage.jsx
-import React, { Suspense, lazy } from 'react';
+//src/pages/PreviousWorkPage.jsx
+import React, {Suspense, lazy} from 'react';
 
 // Directly import Navbar and Footer for faster initial render
 import Navbar from '../components/Navbar/Navbar';
 import Footer from '../components/Footer/Footer';
 
 // Lazy load the main content sections
-const LearnMoreHero = lazy(() => import('../components/LearnMore/LearnMoreHero.jsx'));
-const VisionPhilosophySection = lazy(() => import('../components/LearnMore/VisionPhilosophySection.jsx'));
-const TechnologySection = lazy(() => import('../components/LearnMore/TechnologySection.jsx'));
 
-// Main section
-const LearnMorePage = () => {
-    return (
+
+
+// Main Section
+const PreviousWorkPage = () => {
+    return(
         <div className="w-full min-h-screen bg-background text-text-primary flex flex-col">
             {/* Navbar is directly rendered for immediate availability */}
             <Navbar  />
@@ -24,9 +23,7 @@ const LearnMorePage = () => {
                         Loading content...
                     </div>
                 }>
-                    <LearnMoreHero />
-                    <VisionPhilosophySection />
-                    <TechnologySection />
+                    
                 </Suspense>
             </main>
 
@@ -36,4 +33,5 @@ const LearnMorePage = () => {
     );
 };
 
-export default LearnMorePage;
+export default PreviousWorkPage;
+

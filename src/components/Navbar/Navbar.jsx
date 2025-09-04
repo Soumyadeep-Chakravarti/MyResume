@@ -13,17 +13,21 @@ const Navbar = () => {
 
     const handleLogoClick = () => {
         if (location.pathname === "/") {
+            // Smooth scroll to top on home
             lenis?.scrollTo(0);
         } else {
             navigate("/");
-            window.scrollTo(0);
+            // After navigating, jump to top of page
+            window.scrollTo(0, 0); // ✅ two numbers
+            // or, if you want smooth scroll:
+            // window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
         }
     };
-
     const navItems = [
         { name: "Home", path: "/" },
         { name: "Features", path: "/features" },
         { name: "Contact", path: "/contact" },
+        { name: "Previous Work", path: "/previous-work"},
     ];
 
     return (

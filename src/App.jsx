@@ -7,6 +7,7 @@ const LandingPage = lazy(() => import('./pages/LandingPage.jsx'));
 const FeaturesPage = lazy(() => import('./pages/FeaturesPage.jsx'));
 const ContactPage = lazy(() => import('./pages/ContactPage.jsx'));
 const LearnMorePage = lazy(() => import('./pages/LearnMorePage.jsx'));
+const PreviousWorkPage = lazy(() => import('./pages/PreviousWorksPage.jsx'));
 
 // CRITICAL FIX: Import Context Providers DIRECTLY. DO NOT lazy load them.
 // They must be available synchronously at the root of your application's component tree.
@@ -14,7 +15,6 @@ import { ThemeProvider } from './context/ThemeContext.jsx';
 import { LenisProvider } from './context/LenisContext.jsx';
 
 export default function App() {
-  const [showLogin, setShowLogin] = useState(false);
 
   return (
     <BrowserRouter>
@@ -28,6 +28,7 @@ export default function App() {
               <Route path="/features" element={<FeaturesPage  />} />
               <Route path="/contact" element={<ContactPage />} />
               <Route path="/learn-more" element={<LearnMorePage />} />
+              <Route path="/previous-work" element={<PreviousWorkPage />} />
             </Routes>
             )
           </Suspense>
