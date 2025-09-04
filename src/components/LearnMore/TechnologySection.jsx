@@ -1,7 +1,7 @@
 // src/components/LearnMore/TechnologySection.jsx
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Rocket, ShieldCheck, TrendingUp, Users, Award } from 'lucide-react';
+import { Rocket, Code, Puzzle, Laptop, Cloud, Wrench, Shield } from 'lucide-react'; // Changed ShieldLock to Shield
 
 // Animation variants for sections
 const sectionVariants = {
@@ -37,46 +37,87 @@ const TechnologySection = () => {
             <div className="absolute inset-0 z-0 opacity-10" style={{ backgroundImage: 'linear-gradient(rgba(0,0,0,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,.05) 1px, transparent 1px)', backgroundSize: '20px 20px' }}></div>
             <motion.div className="mb-12 text-center relative z-10" variants={itemVariants}>
                 <Rocket size={64} className="text-primary mx-auto mb-4 drop-shadow-lg" />
-                <h2 className="text-4xl sm:text-5xl font-bold mb-4">Our Cutting-Edge Technology</h2>
+                <h2 className="text-4xl sm:text-5xl font-bold mb-4">My Technical Stack</h2>
                 <p className="text-lg text-text-secondary max-w-3xl mx-auto">
-                    Built on a foundation of modern, secure, and performant technologies.
+                    A versatile skill set built on a foundation of modern, secure, and performant technologies.
                 </p>
             </motion.div>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 relative z-10">
-                <motion.div variants={itemVariants} className="flex flex-col md:flex-row items-start md:items-center gap-6 bg-card-background p-6 rounded-xl shadow-md border border-border-color/50">
-                    <ShieldCheck size={48} className="text-accent flex-shrink-0" />
-                    <div>
-                        <h3 className="text-2xl font-semibold mb-2">Advanced Security Protocols</h3>
-                        <p className="text-text-secondary">
-                            Your data's safety is our top priority. We implement end-to-end encryption, multi-factor authentication, and regular security audits to protect your information.
-                        </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 relative z-10">
+                {/* Programming Languages */}
+                <motion.div variants={itemVariants} className="bg-card-background p-6 rounded-xl shadow-md border border-border-color/50 flex flex-col">
+                    <div className="flex items-start gap-4 mb-4">
+                        <Code size={36} className="text-accent flex-shrink-0" />
+                        <div>
+                            <h3 className="text-2xl font-semibold">Programming Languages</h3>
+                            <p className="text-text-secondary mt-1">
+                                C, C++, Python, JavaScript/TypeScript, SQL, Bash, HTML & CSS.
+                            </p>
+                        </div>
                     </div>
                 </motion.div>
-                <motion.div variants={itemVariants} className="flex flex-col md:flex-row items-start md:items-center gap-6 bg-card-background p-6 rounded-xl shadow-md border border-border-color/50">
-                    <TrendingUp size={48} className="text-secondary flex-shrink-0" />
-                    <div>
-                        <h3 className="text-2xl font-semibold mb-2">Scalable & Resilient Architecture</h3>
-                        <p className="text-text-secondary">
-                            Designed to handle immense loads and grow with your demands, our cloud-native architecture ensures high availability and consistent performance, even during peak usage.
-                        </p>
+                
+                {/* Frameworks & Libraries */}
+                <motion.div variants={itemVariants} className="bg-card-background p-6 rounded-xl shadow-md border border-border-color/50 flex flex-col">
+                    <div className="flex items-start gap-4 mb-4">
+                        <Puzzle size={36} className="text-secondary flex-shrink-0" />
+                        <div>
+                            <h3 className="text-2xl font-semibold">Frameworks & Libraries</h3>
+                            <p className="text-text-secondary mt-1">
+                                React, Next.js, TailwindCSS, Flask, FastAPI, Express.js, NumPy, Pandas, Scikit-learn.
+                            </p>
+                        </div>
                     </div>
                 </motion.div>
-                <motion.div variants={itemVariants} className="flex flex-col md:flex-row items-start md:items-center gap-6 bg-card-background p-6 rounded-xl shadow-md border border-border-color/50">
-                    <Users size={48} className="text-primary flex-shrink-0" />
-                    <div>
-                        <h3 className="text-2xl font-semibold mb-2">Seamless Collaboration Tools</h3>
-                        <p className="text-text-secondary">
-                            Facilitate real-time teamwork with integrated communication, shared workspaces, and version control, all designed to boost team productivity and creativity.
-                        </p>
+
+                {/* Operating Systems & Environments */}
+                <motion.div variants={itemVariants} className="bg-card-background p-6 rounded-xl shadow-md border border-border-color/50 flex flex-col">
+                    <div className="flex items-start gap-4 mb-4">
+                        <Laptop size={36} className="text-primary flex-shrink-0" />
+                        <div>
+                            <h3 className="text-2xl font-semibold">Operating Systems & Environments</h3>
+                            <p className="text-text-secondary mt-1">
+                                Linux (Ubuntu, Arch, Fedora), Windows, Docker, Git, GitHub, CMake, Make.
+                            </p>
+                        </div>
                     </div>
                 </motion.div>
-                <motion.div variants={itemVariants} className="flex flex-col md:flex-row items-start md:items-center gap-6 bg-card-background p-6 rounded-xl shadow-md border border-border-color/50">
-                    <Award size={48} className="text-accent flex-shrink-0" />
-                    <div>
-                        <h3 className="text-2xl font-semibold mb-2">Intuitive User Experience</h3>
-                        <p className="text-text-secondary">
-                            We prioritize user experience, crafting interfaces that are not only beautiful but also incredibly easy to navigate, reducing learning curves and increasing adoption.
-                        </p>
+
+                {/* Databases & Cloud */}
+                <motion.div variants={itemVariants} className="bg-card-background p-6 rounded-xl shadow-md border border-border-color/50 flex flex-col">
+                    <div className="flex items-start gap-4 mb-4">
+                        <Cloud size={36} className="text-accent flex-shrink-0" />
+                        <div>
+                            <h3 className="text-2xl font-semibold">Databases & Cloud</h3>
+                            <p className="text-text-secondary mt-1">
+                                MySQL, PostgreSQL, SQLite, MongoDB, REST APIs, AWS/GCP basics.
+                            </p>
+                        </div>
+                    </div>
+                </motion.div>
+
+                {/* Tools & Productivity */}
+                <motion.div variants={itemVariants} className="bg-card-background p-6 rounded-xl shadow-md border border-border-color/50 flex flex-col">
+                    <div className="flex items-start gap-4 mb-4">
+                        <Wrench size={36} className="text-secondary flex-shrink-0" />
+                        <div>
+                            <h3 className="text-2xl font-semibold">Tools & Productivity</h3>
+                            <p className="text-text-secondary mt-1">
+                                VS Code, Neovim, tmux, Poetry, Jupyter, Zathura, version control workflows.
+                            </p>
+                        </div>
+                    </div>
+                </motion.div>
+
+                {/* Security & Best Practices */}
+                <motion.div variants={itemVariants} className="bg-card-background p-6 rounded-xl shadow-md border border-border-color/50 flex flex-col">
+                    <div className="flex items-start gap-4 mb-4">
+                        <Shield size={36} className="text-primary flex-shrink-0" /> {/* Changed ShieldLock to Shield */}
+                        <div>
+                            <h3 className="text-2xl font-semibold">Security & Best Practices</h3>
+                            <p className="text-text-secondary mt-1">
+                                Encryption basics, secure authentication, code reviews, testing frameworks (pytest, Jest).
+                            </p>
+                        </div>
                     </div>
                 </motion.div>
             </div>

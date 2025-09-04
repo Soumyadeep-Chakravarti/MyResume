@@ -9,7 +9,6 @@ import Footer from '../components/Footer/Footer';
 const LearnMoreHero = lazy(() => import('../components/LearnMore/LearnMoreHero.jsx'));
 const VisionPhilosophySection = lazy(() => import('../components/LearnMore/VisionPhilosophySection.jsx'));
 const TechnologySection = lazy(() => import('../components/LearnMore/TechnologySection.jsx'));
-const TeamSection = lazy(() => import('../components/LearnMore/TeamSection.jsx'));
 
 const LearnMorePage = ({ setShowLogin }) => {
     return (
@@ -27,7 +26,6 @@ const LearnMorePage = ({ setShowLogin }) => {
                     <LearnMoreHero />
                     <VisionPhilosophySection />
                     <TechnologySection />
-                    <TeamSection />
                 </Suspense>
             </main>
 

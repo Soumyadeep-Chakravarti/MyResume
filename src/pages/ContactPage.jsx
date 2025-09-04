@@ -183,25 +183,18 @@ const ContactPage = ({ setShowLogin }) => { // Accept setShowLogin prop
                             <div className="flex items-center gap-4">
                                 <Mail size={24} className="text-accent" />
                                 <div>
-                                    <h3 className="font-semibold text-text-primary">Email Us</h3>
-                                    <p>support@teambyteops.com</p>
+                                    <h3 className="font-semibold text-text-primary">Email</h3>
+                                    <p>soumyadeepsai1@gmail.com</p>
                                 </div>
                             </div>
                             <div className="flex items-center gap-4">
                                 <Phone size={24} className="text-accent" />
                                 <div>
-                                    <h3 className="font-semibold text-text-primary">Call Us</h3>
-                                    <p>+1 (123) 456-7890</p>
+                                    <h3 className="font-semibold text-text-primary">Call</h3>
+                                    <p>+91 9599059229</p>
                                 </div>
                             </div>
-                            <div className="flex items-center gap-4">
-                                <MapPin size={24} className="text-accent" />
-                                <div>
-                                    <h3 className="font-semibold text-text-primary">Our Office</h3>
-                                    <p>123 ByteOps Avenue, Suite 456</p>
-                                    <p>Tech City, TX 78701, USA</p>
-                                </div>
-                            </div>
+                            
                         </div>
                     </motion.div>
                 </motion.section>

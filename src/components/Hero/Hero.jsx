@@ -96,10 +96,12 @@ const Hero = () => {
                 {/* Left side: Text content with animations */}
                 <div className="flex flex-col items-center md:items-start text-center md:text-left mb-10 md:mb-0 md:w-1/2">
                     <motion.h1
-                        className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-2 leading-tight"
+                        className="text-5xl sm:text-6xl md:text-6xl font-extrabold text-transparent bg-clip-text
+                               bg-gradient-to-r from-accent-dark to-secondary
+                               mb-6 leading-tight tracking-tight drop-shadow-lg"
                         variants={itemVariants}
                     >
-                        SOUMYADEEP CHAKRAVARTI
+                        Soumyadeep Chakravarti
                     </motion.h1>
                     {/*
                     <motion.p
@@ -112,22 +114,33 @@ const Hero = () => {
                     
                     {/* Horizontal divider */}
                     <motion.div
-                        className="hidden md:block h-0.5 w-64 bg-gray-400 dark:bg-gray-600 my-4"
+                        className="hidden md:block h-0.5 w-104 bg-gray-400 dark:bg-gray-600 my-4"
                         variants={itemVariants}
                     ></motion.div>
                     
                     <motion.p
-                        className="text-lg sm:text-xl text-gray-600 dark:text-gray-400"
+                        className="text-lg sm:text-xl text-text-secondary mb-10 max-w-2xl mx-auto leading-relaxed"
                         variants={itemVariants}
                     >
                         Innovating | Creating | Leading
                     </motion.p>
                     <motion.p
-                        className="text-lg sm:text-xl text-gray-600 dark:text-gray-400"
+                        className="text-lg sm:text-xl text-text-secondary mb-10 max-w-2xl mx-auto leading-relaxed"
                         variants={itemVariants}
                     >
                         Driven by Impact, Powered by Skill
                     </motion.p>
+
+
+                    <motion.button
+                    onClick={() => navigate('/learn-more')} // Changed path for clarity
+                    className="px-10 py-4 bg-gradient-to-r from-primary to-secondary text-white font-bold
+                               rounded-full shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out
+                               transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-primary/50"
+                    variants={itemVariants}
+                >
+                    Get to know me
+                </motion.button>
                 </div>
 
                 {/* Right side: SVG silhouette with animations */}

@@ -4,8 +4,6 @@ import React from 'react';
 import Navbar from '../components/Navbar/Navbar';
 import Hero from '../components/Hero/Hero';
 import Features from '../components/LandingFeatures/Features';
-import CTA from '../components/CTA/CTA';
-import Testimonials from '../components/Testimonials/Testimonials';
 import Footer from '../components/Footer/Footer';
 
 // LandingPage now accepts setShowLogin as a prop from App.jsx
@@ -21,8 +19,6 @@ const LandingPage = ({ setShowLogin }) => {
             <main className="relative w-full">
                 <Hero/>
                 <Features/>
-                <Testimonials/>
-                <CTA setShowLogin={setShowLogin} />
             </main>
 
             <Footer/>

@@ -9,7 +9,7 @@ import DetailedFeatureCard from '../components/DetailedFeatureCard/DetailedFeatu
 import featuresData from '../data/featuresData'; // Import your features data
 // Ensure featuresData is an array of feature objects
 
-const FeaturesPage = ({ setShowLogin }) => { // Accept setShowLogin prop for Navbar/CTA
+const FeaturesPage = () => { // Accept setShowLogin prop for Navbar/CTA
     const headerVariants = {
         hidden: { opacity: 0, y: 50 },
         visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: 'easeOut' } },
@@ -17,7 +17,7 @@ const FeaturesPage = ({ setShowLogin }) => { // Accept setShowLogin prop for Nav
 
     return (
         <div className="w-full bg-background text-text-primary">
-            <Navbar setShowLogin={setShowLogin} /> {/* Pass setShowLogin to Navbar */}
+            <Navbar  /> {/* Pass setShowLogin to Navbar */}
 
             {/* Main content area - Ensure no horizontal overflow here */}
             <main className="relative w-full py-20 overflow-x-hidden">
