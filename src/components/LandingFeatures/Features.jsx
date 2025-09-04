@@ -4,44 +4,44 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { Zap, Shield, Cloud } from 'lucide-react';
 
 // Import individual feature description components
-import PerformanceDescription from './descriptions/PerformanceDescription';
-import SecurityDescription from './descriptions/SecurityDescription';
-import CloudIntegrationDescription from './descriptions/CloudIntegrationDescription';
-import ScalableArchitecturreDescription from './descriptions/ScalableArchitectureDescription';
-import UserInterfaceDescription from './descriptions/UserInterfaceDescription';
-import SupportDescription from './descriptions/SupportDescription';
+import SystemProgrammingDescription from './descriptions/SystemProgrammingDescription';
+import AiAndDataDrivenDevelopmentDescription from './descriptions/AiAndDataDrivenDevelopmentDescription';
+import OpenSourceAndDocumentationDescritpion from './descriptions/OpenSourceAndDocumentationDescritpion';
+import ProblemSolvingAndArchitectureDescription from './descriptions/ProblemSolvingAndArchitectureDescription';
+import CrossPlatformAndLinuxExpertiseDescription from './descriptions/CrossPlatformAndLinuxExpertiseDescription';
+import ContinuousLearningAndInnovationDescription from './descriptions/ContinuousLearningAndInnovationDescription';
 
 const Features = () => {
     const features = [
         {
             icon: <Zap size={36} className="text-primary" />,
-            title: "Blazing Fast Performance",
-            description: <PerformanceDescription />, // Now a component
+            title: "Systems Programming",
+            description: <SystemProgrammingDescription />, // Now a component
         },
         {
             icon: <Shield size={36} className="text-secondary" />,
-            title: "Robust Security",
-            description: <SecurityDescription />, // Now a component
+            title: "AI & Data-Driven Development",
+            description: <AiAndDataDrivenDevelopmentDescription />, // Now a component
         },
         {
             icon: <Cloud size={36} className="text-accent" />,
-            title: "Seamless Cloud Integration",
-            description: <CloudIntegrationDescription />, // Now a component
+            title: "Open-Source & Documentation",
+            description: <OpenSourceAndDocumentationDescritpion />, // Now a component
         },
         {
             icon: <Zap size={36} className="text-primary" />,
-            title: "Scalable Architecture",
-            description: <ScalableArchitecturreDescription />, // Now a component
+            title: "Problem-Solving & Architecture",
+            description: <ProblemSolvingAndArchitectureDescription />, // Now a component
         },
         {
             icon: <Shield size={36} className="text-secondary" />,
-            title: "Intuitive User Interface",
-            description: <UserInterfaceDescription />, // Now a component
+            title: "Cross-Platform & Linux Expertise",
+            description: <CrossPlatformAndLinuxExpertiseDescription />, // Now a component
         },
         {
             icon: <Cloud size={36} className="text-accent" />,
-            title: "24/7 Dedicated Support",
-            description: <SupportDescription />, // Now a component
+            title: "Continuous Learning & Innovation",
+            description: <ContinuousLearningAndInnovationDescription />, // Now a component
         },
     ];
 

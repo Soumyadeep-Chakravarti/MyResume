@@ -29,7 +29,7 @@ export default function App() {
               <Route path="/contact" element={<ContactPage />} />
               <Route path="/learn-more" element={<LearnMorePage />} />
             </Routes>
-            )}
+            )
           </Suspense>
         </LenisProvider>
       </ThemeProvider>
