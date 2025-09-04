@@ -1,0 +1,124 @@
+/* src/index.css */
+
+@import "tailwindcss";
+
+/*
+ * IMPORTANT: For Tailwind CSS v4 with `darkMode: 'class'`,
+ * you need to explicitly define the `dark` variant using @custom-variant.
+ * This tells Tailwind to generate dark mode styles based on the presence
+ * of the `.dark` class on an ancestor element (like <html>).
+ */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+ * Define custom theme variables using @theme.
+ * These will be the default (light mode) values.
+ */
+@theme {
+  --color-background: oklch(98% 0 0); /* Very light off-white */
+  --color-text-primary: oklch(20% 0.005 280); /* Dark text */
+  --color-text-secondary: oklch(40% 0.005 280); /* Slightly lighter dark text */
+
+  --color-primary: oklch(60% 0.25 260); /* Vibrant Blue */
+  --color-primary-hover: oklch(55% 0.26 260); /* Darker blue for hover */
+
+  --color-secondary: oklch(70% 0.2 60); /* Warm Orange */
+  --color-secondary-hover: oklch(65% 0.21 60); /* Darker orange for hover */
+
+  --color-accent: oklch(75% 0.183 55.934); /* Orange-400 equivalent */
+  --color-accent-dark: oklch(70.5% 0.213 47.604); /* Orange-500 equivalent */
+
+  --color-card-background: oklch(100% 0 0); /* White for card backgrounds */
+  --color-border: oklch(80% 0.005 280); /* Light border */
+
+  /* Gradient colors for Hero section */
+  --gradient-hero-from: oklch(96.7% 0.003 264.542); /* gray-100 */
+  --gradient-hero-to: oklch(92.8% 0.006 264.531);   /* gray-200 */
+}
+
+/*
+ * Override theme variables for dark mode within @layer theme.
+ * When the 'dark' class is present, these values will apply.
+ */
+@layer theme {
+  .dark {
+    --color-background: oklch(15% 0.005 280); /* Dark background */
+    --color-text-primary: oklch(90% 0.005 280); /* Light text */
+    --color-text-secondary: oklch(70% 0.005 280); /* Slightly darker light text */
+
+    --color-primary: oklch(70% 0.25 260); /* Lighter Blue for dark mode */
+    --color-primary-hover: oklch(65% 0.26 260); /* Slightly darker for hover */
+
+    --color-secondary: oklch(75% 0.2 60); /* Lighter Orange for dark mode */
+    --color-secondary-hover: oklch(70% 0.21 60); /* Slightly darker for hover */
+
+    --color-accent: oklch(80% 0.183 55.934); /* Lighter Orange-400 equivalent */
+    --color-accent-dark: oklch(75.5% 0.213 47.604); /* Lighter Orange-500 equivalent */
+
+    --color-card-background: oklch(20% 0.005 280); /* Darker card backgrounds */
+    --color-border: oklch(30% 0.005 280); /* Dark border */
+
+    /* Gradient colors for Hero section in dark mode */
+    --gradient-hero-from: oklch(27.8% 0.033 256.848); /* gray-800 */
+    --gradient-hero-to: oklch(21% 0.034 264.665);   /* gray-900 */
+  }
+}
+
+
+/* Global styles - now referencing our custom theme variables */
+html {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  height: 100%;
+  /* Explicitly hide overflow on html, body to let Lenis take full control */
+
+  /* dont touch this */
+  /* overflow: hidden; This is key for Lenis to work as the sole scroll controller */
+}
+
+#root {
+  /* #root should fill the viewport and allow its content to overflow for Lenis to manage */
+  min-height: 100vh;
+  height: 100%;
+  overflow-y: auto; /* Allow #root to scroll if content overflows */
+  overflow-x: hidden; /* Keep horizontal overflow hidden for clean layout */
+}
+
+body {
+  min-width: 320px;
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  color: var(--color-text-primary); /* Dynamic text color */
+  transition: color 0.5s ease-in-out;
+  background-color: var(--color-background);
+  transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;
+
+}
+
+/* Optional: smooth scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Optional: Button base styles - keep as is or integrate with theme variables */
+button {
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+#map{
+    width: 100%;
+    height: 100%;
+}
+
+.leaflet-container {
+  height: 100%;
+  width: 100%;
+}
+
+.custom-marker-icon {
+  background: transparent;
+  border: none;
+}
