@@ -1,4 +1,5 @@
 // src/components/Footer/Footer.jsx
+
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Crosshair } from 'lucide-react';

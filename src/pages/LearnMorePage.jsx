@@ -27,6 +27,7 @@ const LearnMorePage = () => {
                     <LearnMoreHero />
                     <VisionPhilosophySection />
                     <TechnologySection />
+                    <br />
                 </Suspense>
             </main>
 

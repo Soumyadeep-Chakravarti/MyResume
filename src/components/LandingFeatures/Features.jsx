@@ -1,4 +1,5 @@
 // src/components/LandingFeatures/Features.jsx
+
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Zap, Shield, Cloud } from 'lucide-react';

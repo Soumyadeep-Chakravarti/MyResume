@@ -1,10 +1,12 @@
 // src/pages/LandingPage.jsx
+import React, { Suspense, lazy } from 'react';
 
-import React from 'react';
-import Navbar from '../components/Navbar/Navbar';
-import Hero from '../components/Hero/Hero';
-import Features from '../components/LandingFeatures/Features';
-import Footer from '../components/Footer/Footer';
+// Lazy load components
+const Navbar = lazy(() => import('../components/Navbar/Navbar'));
+const Hero = lazy(() => import('../components/Hero/Hero'));
+const Features = lazy(() => import('../components/LandingFeatures/Features'));
+const Footer = lazy(() => import('../components/Footer/Footer'));
+
 
 // LandingPage now accepts setShowLogin as a prop from App.jsx
 const LandingPage = ({ setShowLogin }) => {
