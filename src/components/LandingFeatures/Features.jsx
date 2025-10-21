@@ -1,10 +1,19 @@
-// src/components/LandingFeatures/Features.jsx
+//src/components/LandingFeatures/Features.jsx
 
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { Zap, Shield, Cloud } from 'lucide-react';
 
-// Import individual feature description components
+import IconGrid from '../IconGrid/IconGrid.jsx'
+
+// Import icon grids
+import { SYSTEM_PROGRAMMING_ICONS } from '../IconGrid/SystemProgrammingIcons';
+import { AI_ICONS } from '../IconGrid/AiIcons';
+import { OPEN_SOURCE_ICONS } from '../IconGrid/OpenSourceIcons';
+import { PROBLEM_SOLVING_ICONS } from '../IconGrid/ProblemSolvingIcons';
+import { CROSS_PLATFORM_ICONS } from '../IconGrid/CrossPlatformIcons';
+import { CONTINUOUS_LEARNING_ICONS } from '../IconGrid/ContinuousLearningIcons';
+
+// Import descriptions
 import SystemProgrammingDescription from './descriptions/SystemProgrammingDescription';
 import AiAndDataDrivenDevelopmentDescription from './descriptions/AiAndDataDrivenDevelopmentDescription';
 import OpenSourceAndDocumentationDescritpion from './descriptions/OpenSourceAndDocumentationDescritpion';
@@ -15,38 +24,37 @@ import ContinuousLearningAndInnovationDescription from './descriptions/Continuou
 const Features = () => {
   const features = [
     {
-      icon: <Zap size={36} className="text-primary" />,
+      icons: SYSTEM_PROGRAMMING_ICONS,
       title: 'Systems Programming',
       description: <SystemProgrammingDescription />,
     },
     {
-      icon: <Shield size={36} className="text-secondary" />,
+      icons: AI_ICONS,
       title: 'AI & Data-Driven Development',
       description: <AiAndDataDrivenDevelopmentDescription />,
     },
     {
-      icon: <Cloud size={36} className="text-accent" />,
-      title: 'Open-Source & Documentation',
+      icons: OPEN_SOURCE_ICONS,
+      title: 'Open Source & Description',
       description: <OpenSourceAndDocumentationDescritpion />,
     },
     {
-      icon: <Zap size={36} className="text-primary" />,
-      title: 'Problem-Solving & Architecture',
+      icons: PROBLEM_SOLVING_ICONS,
+      title: 'Problem Solving & Architecture',
       description: <ProblemSolvingAndArchitectureDescription />,
     },
     {
-      icon: <Shield size={36} className="text-secondary" />,
-      title: 'Cross-Platform & Linux Expertise',
-      description: <CrossPlatformAndLinuxExpertiseDescription />,
+      icons: CROSS_PLATFORM_ICONS,
+      title: 'Cross Platform & Linux Expertise',
+      description: <ContinuousLearningAndInnovationDescription />
     },
     {
-      icon: <Cloud size={36} className="text-accent" />,
+      icons: CONTINUOUS_LEARNING_ICONS,
       title: 'Continuous Learning & Innovation',
       description: <ContinuousLearningAndInnovationDescription />,
     },
   ];
 
-  // Variants for the section's heading and paragraph
   const textVariants = {
     hidden: { opacity: 0, y: 30 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: 'easeOut' } },
@@ -54,7 +62,6 @@ const Features = () => {
 
   return (
     <section className="relative py-20 px-4 sm:px-6 md:px-8 bg-background text-text-primary">
-      {/* added relative here */}
       <div className="max-w-6xl mx-auto text-center">
         <motion.h2
           className="text-4xl sm:text-5xl font-bold mb-4"
@@ -86,7 +93,6 @@ const Features = () => {
   );
 };
 
-// Separate component for each feature card to handle its individual scroll animation
 const FeatureCard = ({ feature, index }) => {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({
@@ -94,16 +100,9 @@ const FeatureCard = ({ feature, index }) => {
     offset: ['start end', 'end start'],
   });
 
-  // Enhanced Y transformation: more pronounced vertical movement
   const y = useTransform(scrollYProgress, [0, 1], [-200, 200]);
-
-  // Opacity with a sharper fade-in/out
   const opacity = useTransform(scrollYProgress, [0, 0.15, 0.85, 1], [0, 1, 1, 0]);
-
-  // Scale with a more subtle zoom
   const scale = useTransform(scrollYProgress, [0, 0.15, 0.85, 1], [0.9, 1, 1, 0.9]);
-
-  // Horizontal transformation based on index (odd/even for left/right slide)
   const x = useTransform(
     scrollYProgress,
     [0, 0.2, 0.8, 1],
@@ -114,13 +113,9 @@ const FeatureCard = ({ feature, index }) => {
     <motion.div
       ref={ref}
       style={{ y, opacity, scale, x }}
-      className="bg-card-background p-8 rounded-xl shadow-lg border border-border-color/50
-                 flex flex-col items-center text-center group transition-all duration-300
-                 hover:shadow-xl hover:scale-[1.02] max-w-2xl mx-auto"
+      className="bg-card-background p-8 rounded-xl shadow-lg border border-border-color/50 flex flex-col items-center text-center group transition-all duration-300 hover:shadow-xl hover:scale-[1.02] max-w-2xl mx-auto"
     >
-      <div className="mb-4 p-3 rounded-full bg-primary/10 group-hover:bg-primary/20 transition-colors duration-300">
-        {feature.icon}
-      </div>
+      <IconGrid icons={feature.icons} size={28} showLabels={false} />
       <h3 className="text-2xl font-semibold text-text-primary mb-3">{feature.title}</h3>
       {feature.description}
     </motion.div>
@@ -128,4 +123,3 @@ const FeatureCard = ({ feature, index }) => {
 };
 
 export default Features;
-

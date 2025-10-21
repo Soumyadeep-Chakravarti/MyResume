@@ -3,7 +3,6 @@ import React from 'react'; // Removed useRef, useEffect as canvas logic moved
 import { motion } from 'framer-motion';
 import { Sparkles } from 'lucide-react'; // Example icon
 import useDarkMode from '../../hooks/useDarkMode'; // Import the useDarkMode hook
-import FluidAnimationBackground from '../Backgrounds/FluidAnimationBackground'; // NEW: Import the background component
 
 // Animation variants for a subtle fade-up and scale-in effect
 const containerVariants = {
@@ -40,8 +39,6 @@ const LearnMoreHero = () => {
             px-4 py-20 sm:px-6 md:px-8 overflow-hidden text-center
             bg-background" // Base background color
         >
-            {/* Render the FluidAnimationBackground component */}
-            <FluidAnimationBackground isDarkMode={isDarkMode} />
 
             <motion.div
                 className="relative z-10 max-w-4xl mx-auto p-8 bg-card-background/60

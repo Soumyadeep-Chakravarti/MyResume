@@ -3,46 +3,6 @@
 import { motion } from 'framer-motion';
 import { useNavigate } from "react-router-dom";
 
-// SVG for the stylized professional figure
-const ProfessionalSilhouette = () => (
-    <svg
-        viewBox="0 0 500 500"
-        className="w-full h-auto text-gray-800 dark:text-white"
-        xmlns="http://www.w3.org/2000/svg"
-        fill="currentColor"
-    >
-        {/* Main body silhouette (abstract) */}
-        <path d="M300 100 C300 200, 200 200, 200 300 V450 H300 V300 C300 200, 400 200, 400 100 Z" opacity="0.1" />
-        <path d="M300 100 C300 200, 200 200, 200 300 V450 H300 V300 C300 200, 400 200, 400 100 Z" fill="none" stroke="currentColor" strokeWidth="2" />
-
-        {/* Head */}
-        <circle cx="250" cy="80" r="50" fill="currentColor" opacity="0.1" />
-        <circle cx="250" cy="80" r="50" fill="none" stroke="currentColor" strokeWidth="2" />
-
-        {/* Abstract Business Icons (simplified for single-file representation) */}
-        
-        {/* Code Icon */}
-        <path d="M190 250 L210 230 M210 270 L190 250 M310 250 L290 270 M290 230 L310 250 M250 220 L250 280" stroke="currentColor" strokeWidth="2" fill="none" />
-        <text x="250" y="210" textAnchor="middle" fontSize="16" fill="currentColor">Code</text>
-
-        {/* Gear Icon */}
-        <circle cx="340" cy="180" r="20" stroke="currentColor" strokeWidth="2" fill="none" />
-        <path d="M340 160 L340 200 M320 180 L360 180" stroke="currentColor" strokeWidth="2" />
-        <text x="340" y="160" textAnchor="middle" fontSize="16" fill="currentColor">Gear</text>
-
-        {/* Graph Icon */}
-        <rect x="180" y="300" width="10" height="40" fill="currentColor" />
-        <rect x="200" y="280" width="10" height="60" fill="currentColor" />
-        <rect x="220" y="310" width="10" height="30" fill="currentColor" />
-        <rect x="240" y="290" width="10" height="50" fill="currentColor" />
-        <text x="215" y="270" textAnchor="middle" fontSize="16" fill="currentColor">Graph</text>
-
-        {/* World Map Icon (simplified abstract shapes) */}
-        <circle cx="150" cy="150" r="25" fill="none" stroke="currentColor" strokeWidth="1" />
-        <path d="M140 160 L135 150 L145 145 M160 140 L165 150 L155 155" stroke="currentColor" strokeWidth="1" />
-        <text x="150" y="140" textAnchor="middle" fontSize="16" fill="currentColor">World</text>
-    </svg>
-);
 
 // Animation variants for a subtle fade-up and scale-in effect
 const containerVariants = {
@@ -145,13 +105,6 @@ const Hero = () => {
                 </motion.button>
                 </div>
 
-                {/* Right side: SVG silhouette with animations */}
-                <motion.div
-                    className="md:w-1/2 flex justify-center md:justify-end"
-                    variants={itemVariants}
-                >
-                    <ProfessionalSilhouette />
-                </motion.div>
             </motion.div>
         </section>
     );

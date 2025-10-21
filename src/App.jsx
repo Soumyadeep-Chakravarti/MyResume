@@ -4,8 +4,6 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 // Lazy load your page components (This is good for performance and should remain lazy)
 const LandingPage = lazy(() => import('./pages/LandingPage.jsx'));
-const FeaturesPage = lazy(() => import('./pages/FeaturesPage.jsx'));
-const ContactPage = lazy(() => import('./pages/ContactPage.jsx'));
 const LearnMorePage = lazy(() => import('./pages/LearnMorePage.jsx'));
 const PreviousWorkPage = lazy(() => import('./pages/PreviousWorksPage.jsx'));
 
@@ -25,8 +23,6 @@ export default function App() {
           <Suspense fallback={<div className="flex justify-center items-center min-h-screen text-text-primary">Loading application...</div>}>
             <Routes>
               <Route path="/" element={<LandingPage />} />
-              <Route path="/features" element={<FeaturesPage  />} />
-              <Route path="/contact" element={<ContactPage />} />
               <Route path="/learn-more" element={<LearnMorePage />} />
               <Route path="/previous-work" element={<PreviousWorkPage />} />
             </Routes>

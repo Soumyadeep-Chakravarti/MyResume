@@ -1,37 +1,41 @@
-//src/pages/PreviousWorkPage.jsx
-import React, {Suspense, lazy} from 'react';
+// src/pages/PreviousWorkPage.jsx
+import React, { Suspense, lazy } from 'react';
 
-// Directly import Navbar and Footer for faster initial render
+// Components
+import DynamicBackground from '../components/DynamicBackground/PreviousWorkBG.jsx';
 import Navbar from '../components/Navbar/Navbar';
 import Footer from '../components/Footer/Footer';
 
-// Lazy load the main content sections
+// Lazy load main content
+const GitHubSection = lazy(() => import("../components/PreviousWorkPage/GithubSection/GithubSection.jsx"));
 
-
-
-// Main Section
 const PreviousWorkPage = () => {
-    return(
-        <div className="w-full min-h-screen bg-background text-text-primary flex flex-col">
-            {/* Navbar is directly rendered for immediate availability */}
-            <Navbar  />
+    return (
+        <div className="w-full min-h-screen text-text-primary flex flex-col relative overflow-x-hidden">
+            {/* Dynamic background */}
+            <DynamicBackground />
 
-            <main className="flex-grow relative w-full">
-                {/* Wrap the lazy-loaded content sections in a Suspense boundary */}
+            {/* Navbar */}
+            <Navbar />
+
+            {/* Main content */}
+            <main className="flex-grow relative w-full pt-40 px-4 md:px-8 lg:px-16">
+                {/* Lazy-loaded sections with fallback */}
                 <Suspense fallback={
                     <div className="flex justify-center items-center min-h-[50vh] text-text-secondary">
                         Loading content...
                     </div>
                 }>
-                    
+                    <GitHubSection username="Soumyadeep-Chakravarti" />
                 </Suspense>
             </main>
 
-            {/* Footer is directly rendered for immediate availability */}
+            {/* Footer */}
             <Footer />
         </div>
     );
 };
 
 export default PreviousWorkPage;
+
 
