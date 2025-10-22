@@ -33,20 +33,20 @@ export default function SimplifiedResume() {
   return (
     <CursorContext.Provider value={cursorValue}>
       <div className="simplified-resume relative">
-        
+
         {/* Backgrounds */}
         <Suspense fallback={null}>
           <Aquarium numBalls={50} cursor={cursorRef.current} />
-          
+
           {/* CONDITIONAL RENDERING: Only load and render CursorBall if NOT mobile */}
           {!isMobile && <CursorBall />}
-          
+
         </Suspense>
 
         {/* Navigation */}
         <NavBar />
-        <SectionNav />
-
+        {!isMobile && <SectionNav />}
+        
         {/* Sections */}
         <div className="relative z-10">
           {renderedSections}
