@@ -53,7 +53,7 @@ const socialLinks = [
   },
   { 
     name: "Discord", 
-    href: "https://discordapp.com/users/soumyadeep_chakravarti", // Placeholder URL
+    href: "https://discordapp.com/users/1141007161070194748", // Placeholder URL
     icon: MessageSquare, // Using MessageSquare
     style: "bg-indigo-500 hover:bg-indigo-600" 
   },
