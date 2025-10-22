@@ -1,29 +1,30 @@
-/* Base Cursor Ball */
+/* Outer wrapper (follows cursor) */
 .cursor-ball {
-  width: 70px;  /* slightly smaller */
+  width: 70px;
   height: 70px;
   pointer-events: none;
   position: fixed;
   top: 0;
   left: 0;
   z-index: 9999;
-  transform: translate3d(0, 0, 0);
   display: flex;
   justify-content: center;
   align-items: center;
+  transform: translate3d(0, 0, 0);
+  transition: opacity 0.3s ease;
 }
 
-/* Inner element for glow/pulse */
+/* Inner glowing layer */
 .cursor-ball-inner {
   width: 100%;
   height: 100%;
   border-radius: 50%;
   display: block;
-  transition: background 0.4s ease, box-shadow 0.4s ease;
+  transition: background 0.4s ease, box-shadow 0.4s ease, opacity 0.3s ease, transform 0.3s ease;
   animation: glowPulse 3s ease-in-out infinite;
 }
 
-/* Light Mode — Minimal Glow for Readability */
+/* Light mode — soft, minimal */
 html:not(.dark) .cursor-ball-inner {
   background: radial-gradient(
     circle,
@@ -36,7 +37,7 @@ html:not(.dark) .cursor-ball-inner {
   mix-blend-mode: normal;
 }
 
-/* Dark Mode — Rich Amber Glow */
+/* Dark mode — rich amber */
 html.dark .cursor-ball-inner {
   background: radial-gradient(
     circle,
@@ -49,17 +50,23 @@ html.dark .cursor-ball-inner {
   mix-blend-mode: screen;
 }
 
-/* Glow pulse animation (scale + subtle shadow flicker) */
+/* Pulse animation */
 @keyframes glowPulse {
   0%, 100% {
     transform: scale(1);
     opacity: 1;
-    box-shadow: 0 0 6px rgba(255,140,30,0.1), 0 0 12px rgba(255,90,0,0.05);
   }
   50% {
     transform: scale(1.05);
     opacity: 0.9;
-    box-shadow: 0 0 8px rgba(255,140,30,0.12), 0 0 14px rgba(255,90,0,0.07);
   }
+}
+
+/* Dimming effect when hovering over text/buttons */
+.cursor-ball.dimmed .cursor-ball-inner {
+  opacity: 0.5;
+  transform: scale(0.9);
+  box-shadow: none;
+  animation: none;
 }
 

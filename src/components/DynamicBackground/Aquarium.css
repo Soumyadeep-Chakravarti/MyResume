@@ -1,21 +1,20 @@
+/* src/components/DynamicBackground/Aquarium.css */
+
 .aquarium-ball {
+  /* VISUALS ONLY: Define appearance, handled by JS */
   position: absolute;
   border-radius: 50%;
+  
+  /* Appearance styling */
   background: radial-gradient(circle, rgba(100,200,255,0.6) 0%, rgba(100,200,255,0.1) 100%);
-  width: 160px;
-  height: 160px;
-  animation: float 12s ease-in-out infinite alternate;
+  
+  /* OPTIMIZATION: Tell the browser that 'transform' will be animated */
+  will-change: transform;
+  
+  /* MISC: Ensure correct layering and interaction */
   z-index: 0;
   pointer-events: none;
+  
+  /* REMOVED: width and height are set dynamically by JS based on constants */
+  /* REMOVED: animation property is removed, as JS controls the position */
 }
-
-/* Each ball can have different durations for randomness */
-.aquarium-ball:nth-child(2) { animation-duration: 14s; }
-.aquarium-ball:nth-child(3) { animation-duration: 10s; }
-
-@keyframes float {
-  0% { transform: translate(0px, 0px) scale(1); }
-  50% { transform: translate(30px, -20px) scale(1.05); }
-  100% { transform: translate(-30px, 20px) scale(0.95); }
-}
-
