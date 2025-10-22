@@ -1,9 +1,11 @@
 // src/components/Simplified/SimplifiedResume.jsx
 import React, { useRef, Suspense, useMemo } from "react";
+
 import { sections } from "./ComponentsRegistry.js";
 import SectionNav from './UI/SectionNav.jsx';
 import NavBar from './UI/NavBar.jsx';
 import { CursorContext } from '../../context/CursorContext.jsx';
+import { useIsMobile } from '../../hooks/useIsMobile.js'; // <-- NEW IMPORT
 
 // Lazy-load backgrounds
 const CursorBall = React.lazy(() => import('../DynamicBackground/CursorBall.jsx'));
@@ -13,6 +15,10 @@ export default function SimplifiedResume() {
   const cursorRef = useRef({ x: 0, y: 0, r: 40 });
   const cursorValue = useMemo(() => cursorRef, []);
 
+  // Check if we are on a mobile device
+  const isMobile = useIsMobile(); // <-- NEW: Hook call
+
+  // Memoized sections remain unchanged and correct
   const renderedSections = useMemo(() =>
     sections.map((Section, index) => (
       <Suspense
@@ -27,10 +33,14 @@ export default function SimplifiedResume() {
   return (
     <CursorContext.Provider value={cursorValue}>
       <div className="simplified-resume relative">
+        
         {/* Backgrounds */}
         <Suspense fallback={null}>
           <Aquarium numBalls={50} cursor={cursorRef.current} />
-          <CursorBall />
+          
+          {/* CONDITIONAL RENDERING: Only load and render CursorBall if NOT mobile */}
+          {!isMobile && <CursorBall />}
+          
         </Suspense>
 
         {/* Navigation */}
@@ -45,4 +55,3 @@ export default function SimplifiedResume() {
     </CursorContext.Provider>
   );
 }
-
