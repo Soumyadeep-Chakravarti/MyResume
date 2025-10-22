@@ -47,7 +47,7 @@ const socialLinks = [
   // --- OTHERS (Comment out what you don't use) ---
   { 
     name: "Instagram", 
-    href: "https://www.instagram.com/", 
+    href: "https://www.instagram.com/soumyadeep_chakravarti?igsh=a213cjdpNXJkbXh1", 
     icon: Instagram, 
     style: "bg-pink-600 hover:bg-pink-700" 
   },
