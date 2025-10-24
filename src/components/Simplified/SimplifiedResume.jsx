@@ -1,57 +1,76 @@
 // src/components/Simplified/SimplifiedResume.jsx
-import React, { useRef, Suspense, useMemo } from "react";
+
+import React, { useRef, Suspense, useMemo, useCallback } from "react";
 
 import { sections } from "./ComponentsRegistry.js";
 import SectionNav from './UI/SectionNav.jsx';
 import NavBar from './UI/NavBar.jsx';
 import { CursorContext } from '../../context/CursorContext.jsx';
-import { useIsMobile } from '../../hooks/useIsMobile.js'; // <-- NEW IMPORT
+import { useIsMobile } from '../../hooks/useIsMobile.js';
+// New Import: Section Observer Hook
+import { useSectionObserver } from '../../hooks/useSectionObserver.js'; 
 
 // Lazy-load backgrounds
 const CursorBall = React.lazy(() => import('../DynamicBackground/CursorBall.jsx'));
 const Aquarium = React.lazy(() => import('../DynamicBackground/Aquarium.jsx'));
 
+import throttle from '../Utils/Throttle.js'; 
+const THROTTLE_LIMIT = 16; 
+
+// Define Stable Section IDs for the observer
+const SECTION_IDS = ['hero', 'about', 'skills', 'projects', 'contact'];
+
 export default function SimplifiedResume() {
-  const cursorRef = useRef({ x: 0, y: 0, r: 40 });
-  const cursorValue = useMemo(() => cursorRef, []);
+    const cursorRef = useRef({ x: 0, y: 0, r: 40 });
+    const cursorValue = useMemo(() => cursorRef, []);
+    const isMobile = useIsMobile();
 
-  // Check if we are on a mobile device
-  const isMobile = useIsMobile(); // <-- NEW: Hook call
+    // 1. Integrate Section Observer Hook
+    const activeSectionId = useSectionObserver(SECTION_IDS);
 
-  // Memoized sections remain unchanged and correct
-  const renderedSections = useMemo(() =>
-    sections.map((Section, index) => (
-      <Suspense
-        key={Section.name || index}
-        fallback={<div className="text-center py-20 text-gray-400">Loading Section...</div>}
-      >
-        <Section />
-      </Suspense>
-    )), []
-  );
+    // Throttled Mouse Handler
+    const handleMouseMove = useCallback(
+        throttle((e) => {
+            const cursor = cursorRef?.current;
+            if (!cursor) return;
+            cursor.x = e.clientX; 
+            cursor.y = e.clientY; 
+        }, THROTTLE_LIMIT),
+        [cursorRef] 
+    );
 
-  return (
-    <CursorContext.Provider value={cursorValue}>
-      <div className="simplified-resume relative">
+    // Memoized sections (Unchanged)
+    const renderedSections = useMemo(() =>
+        sections.map((Section, index) => (
+            <Suspense
+                key={Section.name || index}
+                fallback={<div className="text-center py-20 text-gray-400">Loading Section...</div>}
+            >
+                {/* IMPORTANT: Ensure your Section components render with the correct ID */}
+                <Section id={SECTION_IDS[index]} /> 
+            </Suspense>
+        )), []
+    );
 
-        {/* Backgrounds */}
-        <Suspense fallback={null}>
-          <Aquarium numBalls={50} cursor={cursorRef.current} />
+    return (
+        <CursorContext.Provider value={cursorValue}>
+            <div 
+                className="simplified-resume relative min-h-screen" 
+                onMouseMove={!isMobile ? handleMouseMove : undefined} 
+            >
+                <Suspense fallback={null}>
+                    <Aquarium numBalls={50} cursor={cursorRef.current} /> 
+                    {!isMobile && <CursorBall />}
+                </Suspense>
 
-          {/* CONDITIONAL RENDERING: Only load and render CursorBall if NOT mobile */}
-          {!isMobile && <CursorBall />}
-
-        </Suspense>
-
-        {/* Navigation */}
-        <NavBar />
-        {!isMobile && <SectionNav />}
-        
-        {/* Sections */}
-        <div className="relative z-10">
-          {renderedSections}
-        </div>
-      </div>
-    </CursorContext.Provider>
-  );
+                {/* 2. Pass Active Section ID to Navigation Components */}
+                <NavBar activeSectionId={activeSectionId} />
+                {!isMobile && <SectionNav activeSectionId={activeSectionId} />}
+                
+                <div className="relative z-10">
+                    {renderedSections}
+                </div>
+            </div>
+        </CursorContext.Provider>
+    );
 }
