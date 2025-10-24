@@ -142,7 +142,7 @@ function Hero() {
                     >
                         View Projects
                     </motion.a>
-                    <motion.a // Changed to motion.a
+                    {/*<motion.a // Changed to motion.a
                         href="/resume.pdf"
                         target="_blank"
                         rel="noopener noreferrer"
@@ -154,7 +154,7 @@ function Hero() {
                                        hover:bg-teal-50 dark:hover:bg-gray-800 active:scale-95 whitespace-nowrap focus:ring-4 focus:ring-teal-500/50 dark:focus:ring-teal-400/50" // Enhanced hover/focus
                     >
                         Download Resume
-                    </motion.a>
+                    </motion.a>*/}
                 </motion.div>
             </motion.div>
         </section>
