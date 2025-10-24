@@ -10,7 +10,7 @@ The Cinematic Resume Website is a dual-mode interactive portfolio designed to pr
 
    * Optimized for **fast viewing** and **quick reading**.
    * Minimal animations for **recruiter-focused scanning**.
-   * Displayed within a **mobile phone mockup** on the website.
+   * Displayed within a **tablet mockup** on the website.
    * Focused on **clarity, speed, and readability**.
 
 2. **Cinematic Version**
@@ -26,14 +26,14 @@ Both versions are **optimized and managed for viewing on both mobile and desktop
 
 The transition from the Simplified Version to the Cinematic Version is carefully choreographed to create a cinematic storytelling effect.
 
-1. **Toggle Activation**
+1. **Toggle Activation (Simplified → Cinematic)**
 
    * User clicks/taps the animated toggle.
-   * Mobile phone mockup **closes smoothly**.
+   * Tablet mockup **closes smoothly**.
 
 2. **Camera Movement**
 
-   * Camera **swivels** from the mobile phone to a laptop on the scene.
+   * Camera **swivels** from the tablet to a laptop on the scene.
    * Smooth pan and rotation simulate a cinematic camera movement.
 
 3. **Laptop Opening**
@@ -51,11 +51,19 @@ The transition from the Simplified Version to the Cinematic Version is carefully
      * **Interactive effects** (hover, clicks, or scroll-based animations)
      * **Camera-like panning and zooming** across sections
 
+**Note:** Transition from **Cinematic → Simplified** is the **reverse** of the above sequence:
+
+* Camera moves back from the laptop.
+* Laptop closes.
+* Camera turns toward the tablet.
+* Tablet turns on.
+* Camera zooms in to fill the screen with the tablet view.
+
 ---
 
 ### Visual Metaphor
 
-* **Mobile Phone / Simplified Mode**: Fast reading, recruiter-focused.
+* **Tablet / Simplified Mode**: Fast reading, recruiter-focused.
 * **Laptop / Cinematic Mode**: Immersive cinematic experience with storytelling animations.
 * **Camera Motion**: Bridges the gap between simplified and cinematic depth.
 
@@ -71,7 +79,7 @@ The transition from the Simplified Version to the Cinematic Version is carefully
 
 * **SimplifiedResume**:
 
-  * Render the phone mockup.
+  * Render the tablet mockup.
   * Show minimal, readable sections.
   * Ensure **fast loading** and **readable layout**.
 
@@ -96,15 +104,16 @@ The transition from the Simplified Version to the Cinematic Version is carefully
 * Make both modes **fully responsive** across devices.
 * Consider **lazy-loading cinematic assets** to reduce initial load time.
 * Maintain accessibility: Simplified version ensures screen readers and keyboard navigation work properly.
+* Reverse animations for **Cinematic → Simplified** must mirror the forward transition exactly for consistency.
 
 ---
 
 ### User Flow
 
-1. User lands on the website, sees the **Simplified Resume** inside a phone mockup.
+1. User lands on the website, sees the **Simplified Resume** inside a tablet mockup.
 2. User toggles the switch:
 
-   * Mobile phone closes.
+   * Tablet closes.
    * Camera pans to laptop.
    * Laptop opens.
    * Cinematic Resume begins.
@@ -112,17 +121,23 @@ The transition from the Simplified Version to the Cinematic Version is carefully
 
    * Scrolls through sections.
    * Experiences smooth transitions and dynamic animations.
-4. User can toggle back to **Simplified Mode** at any point.
+4. User can toggle back to **Simplified Mode**:
+
+   * Camera moves back from laptop.
+   * Laptop closes.
+   * Camera turns toward tablet.
+   * Tablet turns on.
+   * Camera zooms in to tablet view.
 
 ---
 
 ### Future Enhancements
 
 * Add **sound effects** or subtle background music for cinematic immersion.
-* Incorporate **3D interactions** for laptop and phone models.
+* Incorporate **3D interactions** for laptop and tablet models.
 * Track **user engagement** with each section to refine experience.
 * Add **theming options**: light, dark, and cinematic themes.
-* Expand **mobile cinematic adaptation** for tablets.
+* Expand **mobile cinematic adaptation** for tablets and larger devices.
 
 ---
 
@@ -133,5 +148,5 @@ The Cinematic Resume Website combines **functionality and storytelling**:
 * **Simplified Version**: for fast reading and recruiter access.
 * **Cinematic Version**: for an immersive, memorable showcase of your skills and experience.
 
-By seamlessly transitioning between these modes, it provides an **innovative and engaging resume experience** that works well across both mobile and desktop environments.
+By seamlessly transitioning between these modes, it provides an **innovative and engaging resume experience** that works well across **tablet, mobile, and desktop environments**.
 
