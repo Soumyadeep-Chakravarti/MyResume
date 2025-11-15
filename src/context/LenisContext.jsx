@@ -88,11 +88,9 @@ export const useLenis = () => {
     const context = useContext(LenisContext);
     // Provide a helpful error message if the hook is used outside of the LenisProvider.
     // This helps debug "Cannot convert object to primitive value" errors early.
-    if (context === null) {
-      console.error('useLenis must be used within a LenisProvider. Ensure LenisProvider wraps your component tree.');
-      // In a production environment, you might choose to throw an error for stricter behavior:
-      // throw new Error('useLenis must be used within a LenisProvider');
-    }
+    // Return null gracefully if Lenis is not yet initialized or provider is missing
+    // This allows components to check for null and handle it appropriately
+    // Don't log errors here as Lenis may still be initializing
     return context;
 };
 
