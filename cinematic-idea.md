@@ -1,9 +1,11 @@
 # 🎬 Cinematic Mode – Lost City Blueprint
 
 ## 🏛 Core Goal & Vibe
-
-Design the **Cinematic version of the resume** as an immersive, on-rails experience through a **"Lost City"** or **ancient ruin infused with modern technology**.  
-The experience should feel like **exploring a forgotten world**, not just browsing a webpage.
+ 
+ Design the **Cinematic version** as a **Video Game Website**.
+ - **NOT a 3D PowerPoint**: It should not feel like sliding through static screens in 3D space.
+ - **Immersive World**: The user explores a living environment.
+ - **Seamless Entry**: The experience begins naturally from the scroll transition of the simple site.
 
 ---
 
@@ -101,8 +103,10 @@ Each with **different parallax speeds** to enhance perceived depth.
   - Simplify scroll animations  
   - Replace particle/focus animations with basic opacity + translation fades.
 
-**6. No Three.js Dependence**
-- All depth and tilt effects use **native DOM + CSS 3D transforms** (`perspective(...)`, `translateZ(...)`).
+**6. 3D / WebGL Core (React Three Fiber)**
+- **Adopting R3F**: To achieve the desired "video game" rendering and true depth, we will use React Three Fiber.
+- **Aesthetic**: "Pixel Art / Voxel" style (e.g., Octopath Traveler, Minecraft) or Low-Poly. This allows for true 3D depth without requiring AAA-level asset production.
+- **Performance**: Use instanced meshes for repeating voxel elements to keep draw calls low.
 
 ---
 

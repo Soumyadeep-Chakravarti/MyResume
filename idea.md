@@ -4,25 +4,21 @@
 
 This document captures the current ideas for the cinematic transition between the **Simplified** and **Cinematic** resume modes.
 
-- Tech stack: React, Framer Motion, Lenis.
-- Anime.js was briefly explored but removed; we’re standardizing on Framer Motion for animations and Lenis for smooth scrolling.
+- Tech stack: React, Framer Motion, Lenis, **React Three Fiber (R3F)**.
+- We are adopting a **true 3D** approach for the cinematic mode to achieve a "video game" feel.
 
 ## High-Level Concept
-
-Two primary modes:
-
-1. **Simplified Mode** – fast, recruiter-friendly, minimal animation, shown in a **tablet mockup**.
-2. **Cinematic Mode** – immersive, animation-heavy experience shown on a **laptop**.
-
-The key UX element is a **mode toggle** that triggers a choreographed, cinematic transition sequence:
-
-- Tablet closes.
-- Camera pans/rotates toward a laptop.
-- Laptop opens.
-- Laptop screen grows to fill the viewport.
-- Cinematic resume takes over.
-
-The reverse sequence plays when going from Cinematic → Simplified.
+ 
+Two primary modes connected by a seamless flow:
+ 
+1. **Simplified Mode** – A standard, high-performance **React website**. Normal scrolling, accessible, clean.
+2. **Transition Zone** – A **2.5D scroll-driven sequence**. As the user scrolls past the end of the simplified resume, the interface transforms (2.5D layers) to bridge the gap to the cinematic world.
+3. **Cinematic Mode** – A **Video Game Website** (R3F). An immersive 3D world, not just "3D slides".
+ 
+The key UX element is **Scroll**:
+- No buttons to press.
+- Scrolling to the bottom of the Simple mode naturally initiates the transition.
+- The transition "hands off" the user into the 3D Game World.
 
 ## Architectural Approach
 

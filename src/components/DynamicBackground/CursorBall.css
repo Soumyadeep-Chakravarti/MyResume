@@ -1,72 +1,84 @@
 /* Outer wrapper (follows cursor) */
 .cursor-ball {
-  width: 70px;
-  height: 70px;
-  pointer-events: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 9999;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transform: translate3d(0, 0, 0);
-  transition: opacity 0.3s ease;
+	width: 70px;
+	height: 70px;
+	pointer-events: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 9999;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	transform: translate3d(0, 0, 0); 
+	transition: opacity 0.3s ease;
 }
 
 /* Inner glowing layer */
 .cursor-ball-inner {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  display: block;
-  transition: background 0.4s ease, box-shadow 0.4s ease, opacity 0.3s ease, transform 0.3s ease;
-  animation: glowPulse 3s ease-in-out infinite;
+	width: 100%;
+	height: 100%;
+	border-radius: 50%;
+	display: block;
+	transition: background 0.4s ease, box-shadow 0.4s ease, opacity 0.3s ease, transform 0.3s ease, filter 0.4s ease;
+	animation: glowPulse 3s ease-in-out infinite;
+
+    filter: blur(2px);
+    will-change: transform, opacity, filter; 
 }
 
 /* Light mode — soft, minimal */
 html:not(.dark) .cursor-ball-inner {
-  background: radial-gradient(
-    circle,
-    rgba(255, 140, 30, 0.35) 0%,
-    rgba(255, 90, 0, 0.05) 100%
-  );
-  box-shadow:
-    0 0 6px rgba(255, 140, 30, 0.1),
-    0 0 12px rgba(255, 90, 0, 0.05);
-  mix-blend-mode: normal;
+	background: radial-gradient(
+		circle,
+		rgba(255, 140, 30, 0.45) 0%, 
+		rgba(255, 90, 0, 0.05) 100%
+	);
+	box-shadow:
+		0 0 8px rgba(255, 140, 30, 0.2), 
+		0 0 16px rgba(255, 90, 0, 0.1);
+	mix-blend-mode: multiply; 
 }
 
 /* Dark mode — rich amber */
 html.dark .cursor-ball-inner {
-  background: radial-gradient(
-    circle,
-    rgba(255, 200, 100, 0.85) 0%,
-    rgba(255, 120, 30, 0.3) 100%
-  );
-  box-shadow:
-    0 0 45px rgba(255, 170, 60, 0.65),
-    0 0 90px rgba(255, 100, 20, 0.3);
-  mix-blend-mode: screen;
+	background: radial-gradient(
+		circle,
+		rgba(255, 200, 100, 0.9) 0%, 
+		rgba(255, 120, 30, 0.4) 100%
+	);
+	box-shadow:
+		0 0 50px rgba(255, 170, 60, 0.8), 
+		0 0 100px rgba(255, 100, 20, 0.5); 
+	mix-blend-mode: screen;
 }
 
-/* Pulse animation */
+/* Pulse animation (unchanged) */
 @keyframes glowPulse {
-  0%, 100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-  50% {
-    transform: scale(1.05);
-    opacity: 0.9;
-  }
+	0%, 100% {
+		transform: scale(1);
+		opacity: 1;
+        filter: blur(2px); 
+	}
+	50% {
+		transform: scale(1.03);
+		filter: blur(3px);
+		opacity: 0.95;
+	}
 }
 
 /* Dimming effect when hovering over text/buttons */
+/* ✅ FIX: Increased Specificity and reset mix-blend-mode */
 .cursor-ball.dimmed .cursor-ball-inner {
-  opacity: 0.5;
-  transform: scale(0.9);
-  box-shadow: none;
-  animation: none;
+    opacity: 0.5 !important;
+    transform: scale(0.6) !important; 
+    
+    /* Reset properties that might be inherited from theme selectors */
+    background: initial !important; 
+    box-shadow: none !important; 
+    filter: blur(0px) !important; 
+    animation: none !important; 
+    
+    /* Crucial: Set blend mode to normal for a clean, focused cursor */
+    mix-blend-mode: normal !important; 
 }
-

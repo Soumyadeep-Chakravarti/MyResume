@@ -9,11 +9,11 @@ const INITIAL_OFFSET = -50;
 const CURSOR_REPEL_RADIUS_SQ = 150 * 150;
 const REPEL_FORCE = 0.5;
 
-export default function Aquarium({ numBalls = 8, cursor }) {
+export default function Aquarium({ numBalls = 8, cursorRef }) {
   const containerRef = useRef(null);
   const animationRef = useRef();
   // --- NEW: Ref to store mutable ball state as native JavaScript numbers ---
-  const ballStateRef = useRef([]); 
+  const ballStateRef = useRef([]);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -26,7 +26,7 @@ export default function Aquarium({ numBalls = 8, cursor }) {
     const balls = Array.from({ length: numBalls }).map(() => {
       const ball = document.createElement("div");
       ball.className = "aquarium-ball";
-      
+
       const size = Math.random() * (BALL_SIZE_MAX - BALL_SIZE_MIN) + BALL_SIZE_MIN;
       ball.style.width = `${size}px`;
       ball.style.height = `${size}px`;
@@ -42,22 +42,23 @@ export default function Aquarium({ numBalls = 8, cursor }) {
       // Initial transform
       ball.style.transform = `translate(${state.x}px, ${state.y}px)`;
       container.appendChild(ball);
-      
+
       return state; // Return the state object, not the DOM element
     });
-    
+
     ballStateRef.current = balls; // Store the array of state objects
 
     // --- 2. Animation Loop ---
-    const { x: cursorX, y: cursorY } = cursor || {}; // Destructure once outside rAF loop
-    const hasCursor = cursorX !== undefined && cursorY !== undefined;
-
     const animate = () => {
+      // Get latest cursor position from ref inside the loop
+      const cursor = cursorRef?.current;
+      const hasCursor = cursor && cursor.x !== undefined && cursor.y !== undefined;
+
       ballStateRef.current.forEach((state) => {
         let { element, x: currentX, y: currentY, speed } = state;
-        
+
         let newY = currentY + speed;
-        
+
         // --- Cursor Repulsion Logic ---
         let repelX = 0;
         let repelY = 0;
@@ -66,26 +67,26 @@ export default function Aquarium({ numBalls = 8, cursor }) {
           const dx = currentX - cursor.x; // Use the direct object properties
           const dy = currentY - cursor.y;
           const distanceSq = dx * dx + dy * dy;
-          
+
           if (distanceSq < CURSOR_REPEL_RADIUS_SQ && distanceSq > 1) {
             const distance = Math.sqrt(distanceSq);
             const factor = Math.max(0, 1 - distance / Math.sqrt(CURSOR_REPEL_RADIUS_SQ));
-            
+
             repelX = (dx / distance) * factor * REPEL_FORCE;
             repelY = (dy / distance) * factor * REPEL_FORCE;
           }
         }
-        
+
         // Apply repulsion
         let newX = currentX + repelX;
         newY += repelY;
-        
+
         // --- Boundary Check ---
         if (newY > window.innerHeight) {
           newY = INITIAL_OFFSET;
           newX = Math.random() * window.innerWidth;
         }
-        
+
         // Update state in ref (using a simple object mutation for performance in rAF)
         state.x = newX;
         state.y = newY;
@@ -101,12 +102,12 @@ export default function Aquarium({ numBalls = 8, cursor }) {
 
     // 6. Cleanup
     return () => cancelAnimationFrame(animationRef.current);
-  }, [numBalls, cursor]); // Dependencies are correct
+  }, [numBalls]); // Removed cursor from dependencies to prevent re-init
 
   return (
-    <div 
-      ref={containerRef} 
-      className="absolute inset-0 pointer-events-none z-0 bg-transparent" 
+    <div
+      ref={containerRef}
+      className="absolute inset-0 pointer-events-none z-0 bg-transparent"
     />
   );
 }

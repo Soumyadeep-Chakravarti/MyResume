@@ -84,15 +84,15 @@ export const LenisProvider = ({ children }) => {
 };
 
 // Custom hook to easily access the Lenis instance from any child component
+// src/context/LenisContext.jsx (Refined useLenis)
+
 export const useLenis = () => {
     const context = useContext(LenisContext);
-    // Provide a helpful error message if the hook is used outside of the LenisProvider.
-    // This helps debug "Cannot convert object to primitive value" errors early.
-    // Return null gracefully if Lenis is not yet initialized or provider is missing
-    // This allows components to check for null and handle it appropriately
-    // Don't log errors here as Lenis may still be initializing
-    return context;
+    // 💡 IMPROVEMENT: Throw error only if context is null AND NOT in an initialization/cleanup phase
+    if (context === undefined) { 
+        throw new Error('useLenis must be used within a LenisProvider.');
+    }
+    // If context is null, it means the Lenis instance hasn't been set yet (it's in the initial state).
+    // Returning null gracefully allows consumers to handle the 'loading' state.
+    return context; 
 };
-
-// Export LenisProvider as the default export for easier import
-export default LenisProvider;

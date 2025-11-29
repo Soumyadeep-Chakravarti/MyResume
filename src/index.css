@@ -122,3 +122,20 @@ button {
   background: transparent;
   border: none;
 }
+
+/* Hide the scrollbar visual elements provided by the Lenis library */
+.lenis.lenis-smooth {
+    /* Hides the default system scrollbar if it appears */
+    scrollbar-width: none; 
+}
+.lenis-scrollbar {
+    /* Hides the custom scrollbar track and thumb */
+    display: none !important;
+    opacity: 0 !important;
+}
+/* For Chrome/Safari/Edge compatibility (if needed) */
+.lenis.lenis-smooth::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+}
