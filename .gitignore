@@ -32,3 +32,4 @@ Thumbs.db # Windows
 # If you have a local config file for deployment/hosting, exclude it.
 .firebase/
 firebase-debug.log
+.aider*

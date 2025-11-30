@@ -3,8 +3,8 @@
 ## 🏛 Core Goal & Vibe
  
  Design the **Cinematic version** as a **Video Game Website**.
- - **NOT a 3D PowerPoint**: It should not feel like sliding through static screens in 3D space.
- - **Immersive World**: The user explores a living environment.
+ - **Theme**: **"The Animus Simulation"**. The user is "synchronizing" with your history.
+ - **Visuals**: A blend of **Ancient Architecture** (The Past) and **Digital Glitch/Data** (The Simulation).
  - **Seamless Entry**: The experience begins naturally from the scroll transition of the simple site.
 
 ---
@@ -105,8 +105,13 @@ Each with **different parallax speeds** to enhance perceived depth.
 
 **6. 3D / WebGL Core (React Three Fiber)**
 - **Adopting R3F**: To achieve the desired "video game" rendering and true depth, we will use React Three Fiber.
-- **Aesthetic**: "Pixel Art / Voxel" style (e.g., Octopath Traveler, Minecraft) or Low-Poly. This allows for true 3D depth without requiring AAA-level asset production.
-- **Performance**: Use instanced meshes for repeating voxel elements to keep draw calls low.
+- **Aesthetic**: **"Animus Simulation / Renaissance"** (OG Assassin's Creed / Ezio Era).
+    - **Light Mode**: **"The White Room"**. Infinite white void with geometric data fog.
+    - **Dark Mode**: **"The Dark Room"**. Deep black void with neon blue/red data streams.
+    - **Transition Mechanic**: **"The Animus Bleed"**. A soft, organic spread of light/liquid (Ink on Parchment). It starts as a droplet and "soaks" the screen, blurring the 2D content before revealing the 3D world.
+    - **Visuals**: Realistic stone ruins (Florence/Venice style) being "simulated" or "loaded" by the Animus.
+    - **Effects**: Digital glitch lines, geometric data fragments.
+- **Performance**: Use instanced meshes for repeating architectural elements (columns, arches).
 
 ---
 

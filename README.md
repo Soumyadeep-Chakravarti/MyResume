@@ -1,152 +1,73 @@
-# Presently under construction
+# Cinematic Resume Website - "The Animus Project"
 
-## Cinematic Resume Website - Full Documentation
+## Overview
 
-### Overview
+The Cinematic Resume Website is a dual-mode interactive portfolio designed to present your professional profile in two distinct experiences, bridged by a "Synchronization" mechanic inspired by the *Assassin's Creed* Animus.
 
-The Cinematic Resume Website is a dual-mode interactive portfolio designed to present your professional profile in two distinct experiences:
+### 1. Simplified Version (The Reality)
+*   **Tech**: React, Tailwind CSS.
+*   **Vibe**: Clean, fast, accessible.
+*   **Purpose**: Optimized for recruiters and quick scanning.
+*   **Interaction**: Standard vertical scrolling.
 
-1. **Simplified Version**
-
-   * Optimized for **fast viewing** and **quick reading**.
-   * Minimal animations for **recruiter-focused scanning**.
-   * Displayed within a **tablet mockup** on the website.
-   * Focused on **clarity, speed, and readability**.
-
-2. **Cinematic Version**
-
-   * Full **movie-like, immersive experience**.
-   * Includes **dynamic animations, interactive section transitions**, and camera-like movements.
-
-Both versions are **optimized and managed for viewing on both mobile and desktop environments**. Users can seamlessly **switch between the two modes** using an **animated toggle**.
+### 2. Cinematic Version (The Simulation)
+*   **Tech**: **React Three Fiber (R3F)**, Drei, Framer Motion.
+*   **Vibe**: **"Animus Simulation / Renaissance"**. A living 3D world.
+*   **Purpose**: Immersive storytelling and "video game" feel.
+*   **Interaction**: 3D camera movement, "White Room" / "Dark Room" themes.
 
 ---
 
-### Transition Sequence
+## The Transition: "The Animus Bleed"
 
-The transition from the Simplified Version to the Cinematic Version is carefully choreographed to create a cinematic storytelling effect.
+We replaced the traditional "Toggle Button" with an organic, scroll-driven experience.
 
-1. **Toggle Activation (Simplified → Cinematic)**
-
-   * User clicks/taps the animated toggle.
-   * Tablet mockup **closes smoothly**.
-
-2. **Camera Movement**
-
-   * Camera **swivels** from the tablet to a laptop on the scene.
-   * Smooth pan and rotation simulate a cinematic camera movement.
-
-3. **Laptop Opening**
-
-   * Laptop lid **opens gradually**.
-   * Camera **moves forward** toward the laptop screen.
-   * Laptop screen expands until it **fills the full website viewport**.
-
-4. **Cinematic Resume Launch**
-
-   * The cinematic resume animations begin once the laptop screen fills the view.
-   * Features include:
-
-     * **Dynamic section transitions** (About, Skills, Projects, Contact)
-     * **Interactive effects** (hover, clicks, or scroll-based animations)
-     * **Camera-like panning and zooming** across sections
-
-**Note:** Transition from **Cinematic → Simplified** is the **reverse** of the above sequence:
-
-* Camera moves back from the laptop.
-* Laptop closes.
-* Camera turns toward the tablet.
-* Tablet turns on.
-* Camera zooms in to fill the screen with the tablet view.
+1.  **Scroll to Synchronize**: As the user scrolls to the bottom of the Simplified Resume, they enter the **Transition Zone**.
+2.  **The Bleed**: A **Drop of Memory Ink** appears and spreads organically across the screen (like ink on parchment).
+3.  **The Handover**: The ink "soaks" into the 2D content, blurring and dissolving it. The 3D world reveals itself *inside* the spreading ink blot.
+4.  **Entry**: Once fully saturated, the user is transported into the **Animus Simulation**.
 
 ---
 
-### Visual Metaphor
+## Technical Architecture
 
-* **Tablet / Simplified Mode**: Fast reading, recruiter-focused.
-* **Laptop / Cinematic Mode**: Immersive cinematic experience with storytelling animations.
-* **Camera Motion**: Bridges the gap between simplified and cinematic depth.
+### Core Stack
+*   **React**: UI Framework.
+*   **Vite**: Build tool.
+*   **Tailwind CSS**: Styling.
 
----
+### Cinematic Stack
+*   **React Three Fiber (R3F)**: 3D Rendering Engine (WebGL).
+*   **@react-three/drei**: 3D Helpers and abstractions.
+*   **Framer Motion**: 2D animations and layout transitions.
+*   **Lenis**: Smooth scrolling for the 2D experience.
 
-### Components Structure
-
-* `components/SimplifiedResume.jsx` → Simplified version.
-* `components/CinematicResume.jsx` → Cinematic version.
-* `components/ToggleSwitch.jsx` → Handles mode switching and triggers animations.
-
-#### Component Responsibilities
-
-* **SimplifiedResume**:
-
-  * Render the tablet mockup.
-  * Show minimal, readable sections.
-  * Ensure **fast loading** and **readable layout**.
-
-* **CinematicResume**:
-
-  * Render sections with cinematic transitions.
-  * Control camera movement, zoom, and section animation timing.
-  * Maintain **responsive and interactive behavior**.
-
-* **ToggleSwitch**:
-
-  * Animates the mode switch.
-  * Handles **state management** between Simplified and Cinematic modes.
-  * Triggers camera and scene transition animations.
+### Directory Structure
+*   `src/components/Simplified/`: The 2D Resume components.
+*   `src/components/Cinematic/`: The R3F 3D World components.
+*   `src/components/Transition/`: The "ScrollTransitionZone" and Animus effects.
+*   `src/context/CinematicModeContext.jsx`: Manages the state between "Simplified" and "Cinematic".
 
 ---
 
-### Implementation Notes
+## Development
 
-* Use **Framer Motion** or **Three.js** for smooth animations.
-* Ensure **performance optimization** during transitions and heavy animations.
-* Make both modes **fully responsive** across devices.
-* Consider **lazy-loading cinematic assets** to reduce initial load time.
-* Maintain accessibility: Simplified version ensures screen readers and keyboard navigation work properly.
-* Reverse animations for **Cinematic → Simplified** must mirror the forward transition exactly for consistency.
+### Prerequisites
+*   Node.js (v18+)
 
----
+### Setup
+```bash
+npm install
+npm run dev
+```
 
-### User Flow
-
-1. User lands on the website, sees the **Simplified Resume** inside a tablet mockup.
-2. User toggles the switch:
-
-   * Tablet closes.
-   * Camera pans to laptop.
-   * Laptop opens.
-   * Cinematic Resume begins.
-3. User interacts with Cinematic Resume:
-
-   * Scrolls through sections.
-   * Experiences smooth transitions and dynamic animations.
-4. User can toggle back to **Simplified Mode**:
-
-   * Camera moves back from laptop.
-   * Laptop closes.
-   * Camera turns toward tablet.
-   * Tablet turns on.
-   * Camera zooms in to tablet view.
+### Key Commands
+*   `npm run dev`: Start local development server.
+*   `npm run build`: Build for production.
 
 ---
 
-### Future Enhancements
-
-* Add **sound effects** or subtle background music for cinematic immersion.
-* Incorporate **3D interactions** for laptop and tablet models.
-* Track **user engagement** with each section to refine experience.
-* Add **theming options**: light, dark, and cinematic themes.
-* Expand **mobile cinematic adaptation** for tablets and larger devices.
-
----
-
-### Conclusion
-
-The Cinematic Resume Website combines **functionality and storytelling**:
-
-* **Simplified Version**: for fast reading and recruiter access.
-* **Cinematic Version**: for an immersive, memorable showcase of your skills and experience.
-
-By seamlessly transitioning between these modes, it provides an **innovative and engaging resume experience** that works well across **tablet, mobile, and desktop environments**.
-
+## Design Philosophy
+*   **"Keep it Real"**: The transition should feel alive and organic (ink bleeding), not mechanical.
+*   **"Video Game Website"**: The Cinematic mode is a world to explore, not just 3D slides.
+*   **Performance**: Heavy 3D assets are loaded only when the transition begins.

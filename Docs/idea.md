@@ -8,17 +8,22 @@ This document captures the current ideas for the cinematic transition between th
 - We are adopting a **true 3D** approach for the cinematic mode to achieve a "video game" feel.
 
 ## High-Level Concept
- 
-Two primary modes connected by a seamless flow:
- 
-1. **Simplified Mode** – A standard, high-performance **React website**. Normal scrolling, accessible, clean.
-2. **Transition Zone** – A **2.5D scroll-driven sequence**. As the user scrolls past the end of the simplified resume, the interface transforms (2.5D layers) to bridge the gap to the cinematic world.
-3. **Cinematic Mode** – A **Video Game Website** (R3F). An immersive 3D world, not just "3D slides".
- 
-The key UX element is **Scroll**:
-- No buttons to press.
-- Scrolling to the bottom of the Simple mode naturally initiates the transition.
-- The transition "hands off" the user into the 3D Game World.
+  
+  Two primary modes connected by a seamless flow:
+  
+  1. **Simplified Mode** – A standard, high-performance **React website**. Normal scrolling, accessible, clean.
+  2. **Transition Zone** – **"The Animus Bleed"**. As the user scrolls past the end, a **Drop of Memory Ink** appears.
+     - It spreads organically (like watercolor on parchment) as they scroll.
+     - It "soaks" into the simplified resume, blurring and dissolving the text.
+     - The 3D world reveals itself *inside* the spreading ink.
+  3. **Cinematic Mode** – **"The Animus Simulation"**. A 3D world rendered in R3F.
+     - **Light Mode**: "The White Room" (Infinite void, data fog).
+     - **Dark Mode**: "The Dark Room" (Neon data streams).
+  
+  The key UX element is **Scroll**:
+  - No buttons to press.
+  - Scrolling feeds the "Bleed".
+  - When fully saturated (max scroll), the ink consumes the screen and the simulation takes over.
 
 ## Architectural Approach
 
@@ -28,10 +33,10 @@ We model this with three conceptual layers:
    - `SimplifiedResume` – minimal, fast-reading layout.
    - `CinematicResume` – animated, scroll-driven experience.
 
-2. **Device Scene Layer** (transition “stage”)
-   - Contains visual representations of the **tablet** and **laptop**.
-   - Handles camera-like movement via Framer Motion transforms.
-   - Likely implemented as a fixed, full-viewport overlay.
+231. **Animus Layer** (transition “stage”)
+    - Contains the **Synchronization Sphere** and **Data Overlays**.
+    - Handles the "White Room" / "Dark Room" background transitions.
+    - Implemented as a fixed R3F overlay or high-performance DOM layer.
 
 3. **Mode / Transition State Machine**
    - Top-level mode values (example):
