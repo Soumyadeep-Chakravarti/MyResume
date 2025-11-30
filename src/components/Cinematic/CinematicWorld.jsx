@@ -1,53 +1,67 @@
-import React, { Suspense } from 'react';
-import { Canvas } from '@react-three/fiber';
-import { OrbitControls, Stars, Text } from '@react-three/drei';
-import { useCinematic } from '../../context/CinematicModeContext';
+// src/components/Cinematic/CinematicWorld.jsx
 
-function Scene() {
+import React, { useRef, useMemo, useEffect } from 'react'; // <-- Ensure useEffect is imported
+import { useCinematic } from '../../context/CinematicModeContext.jsx';
+import InkBleed from '../Transition/InkBleed.jsx';
+import { OrbitControls } from '@react-three/drei';
+import AnimatedSphere from '../DynamicBackground/AnimatedSphere.jsx'; // <-- Assuming this is the new path
+
+// --- CinematicWorld Component ---
+export default function CinematicWorld() {
+    const { isCinematic, isTransitioning, transitionProgress } = useCinematic();
+
+    // Ref to hold the AnimatedSphere's mesh instance
+    const sphereRef = useRef(null); 
+    const isSceneActive = isCinematic; 
+    
+    const rotationalLimit = useMemo(() => Math.PI / 12, []);
+
+    // 🧹 CRITICAL FIX: DISPOSAL OF GPU RESOURCES 🧹
+    // This useEffect cleanup function runs when CinematicWorld unmounts,
+    // ensuring Three.js resources are explicitly freed from the GPU memory (VRAM).
+    useEffect(() => {
+        // The cleanup function
+        return () => {
+            const sphereMesh = sphereRef.current;
+            if (sphereMesh) {
+                // Explicitly call dispose() on geometry and material
+                // to prevent memory leaks, which are the root cause of Context Lost.
+                if (sphereMesh.geometry) sphereMesh.geometry.dispose();
+                if (sphereMesh.material) sphereMesh.material.dispose();
+            }
+        };
+    }, []); 
+
     return (
         <>
-            <ambientLight intensity={0.5} />
-            <pointLight position={[10, 10, 10]} />
+            {/* 1. Scene Setup */}
+            <color attach="background" args={['#000000']} />
+            <ambientLight intensity={0.3} /> 
+            <pointLight position={[10, 10, 10]} intensity={1.5} color="#ffffff" />
+            <pointLight position={[-10, -10, -10]} intensity={0.8} color="#99aadd" />
 
-            <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
+            {/* 2. Camera Control (OrbitControls) */}
+            <OrbitControls
+                enabled={isCinematic}
+                enableZoom={false}
+                enablePan={false}
+                enableDamping={true} 
+                dampingFactor={0.1}
+                minPolarAngle={Math.PI / 2 - rotationalLimit}
+                maxPolarAngle={Math.PI / 2 + rotationalLimit}
+                minAzimuthAngle={-rotationalLimit}
+                maxAzimuthAngle={rotationalLimit}
+            />
 
-            <mesh position={[0, 0, 0]}>
-                <boxGeometry args={[2, 2, 2]} />
-                <meshStandardMaterial color="cyan" wireframe />
-            </mesh>
+            {/* 3. The 2.5D Ink Bleed Effect */}
+            <InkBleed progress={transitionProgress} />
 
-            <Text
-                position={[0, 2, 0]}
-                fontSize={0.5}
-                color="white"
-                anchorX="center"
-                anchorY="middle"
-            >
-                WELCOME TO THE VOID
-            </Text>
+            {/* 4. The Actual Cinematic 3D Scene */}
+            <AnimatedSphere
+                ref={sphereRef} // <-- Pass the ref here
+                isTransitioning={isTransitioning}
+                isActive={isSceneActive}
+            />
         </>
-    );
-}
-
-export default function CinematicWorld() {
-    const { exitCinematic } = useCinematic();
-
-    return (
-        <div className="w-full h-screen bg-black relative">
-            {/* Exit Button (Temporary) */}
-            <button
-                onClick={exitCinematic}
-                className="absolute top-4 right-4 z-50 px-4 py-2 bg-white/10 text-white rounded hover:bg-white/20 backdrop-blur-sm"
-            >
-                Exit Simulation
-            </button>
-
-            <Canvas camera={{ position: [0, 0, 5], fov: 75 }} dpr={[1, 2]}>
-                <Suspense fallback={null}>
-                    <Scene />
-                    <OrbitControls autoRotate />
-                </Suspense>
-            </Canvas>
-        </div>
     );
 }

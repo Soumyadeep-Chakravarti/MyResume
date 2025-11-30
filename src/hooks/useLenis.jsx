@@ -1,42 +1,58 @@
-import { useEffect, useRef } from 'react'; // Import useRef
+import { useEffect, useRef } from 'react';
 import Lenis from 'lenis';
 
-const useLenis = () => {
-    // Use a ref to store the Lenis instance so it persists across re-renders
-    // and can be accessed by the cleanup function or returned.
+/**
+ * A custom hook to initialize and manage a singleton Lenis smooth-scrolling instance.
+ * It ensures the instance is created only once, runs the necessary RAF loop,
+ * and handles proper destruction on component unmount.
+ *
+ * @param {object} options - Optional configuration object passed directly to the Lenis constructor.
+ * @returns {Lenis | null} The Lenis instance, or null if it hasn't been initialized yet.
+ */
+const useLenis = (options = {}) => {
+    // 1. Use a ref to store the Lenis instance so it persists across re-renders
     const lenisInstanceRef = useRef(null);
 
     useEffect(() => {
-        // Only create a new Lenis instance if one doesn't already exist in the ref
+        let animationFrame; // Declare animationFrame outside of any conditional logic
+
+        // Only create a new Lenis instance if one doesn't already exist
         if (!lenisInstanceRef.current) {
-            const lenis = new Lenis();
+            // Create the instance with user-provided options
+            const lenis = new Lenis(options);
             lenisInstanceRef.current = lenis; // Store the instance
 
-            let animationFrame;
-
+            // 2. Define the RAF loop function
             const raf = (time) => {
                 lenis.raf(time);
-                // Continue the animation loop only if the component is still mounted
-                // and the instance still exists.
+                
+                // CRITICAL: Update the animationFrame variable to the new frame ID
+                // to ensure the cleanup function stops the *latest* frame.
                 if (lenisInstanceRef.current) {
                     animationFrame = requestAnimationFrame(raf);
                 }
             };
 
-            animationFrame = requestAnimationFrame(raf); // Start the animation loop
+            // 3. Start the loop and save the initial frame ID
+            animationFrame = requestAnimationFrame(raf); 
         }
 
         // Cleanup function
         return () => {
             if (lenisInstanceRef.current) {
-                cancelAnimationFrame(animationFrame); // Stop the animation frame loop
-                lenisInstanceRef.current.destroy(); // Destroy the Lenis instance
-                lenisInstanceRef.current = null; // Clear the ref
+                // Stop the entire loop via the last registered frame ID
+                cancelAnimationFrame(animationFrame); 
+                
+                // Destroy the Lenis instance, which removes all listeners and resets the DOM
+                lenisInstanceRef.current.destroy();
+                
+                // Clean up the ref to prevent memory leaks/re-use issues
+                lenisInstanceRef.current = null;
             }
         };
-    }, []); // Empty dependency array ensures this effect runs only once on mount
+    }, [options]); // Depend on options to allow re-initialization if options change
 
-    // Return the current Lenis instance so other components can interact with it
+    // Return the current Lenis instance
     return lenisInstanceRef.current;
 };
 

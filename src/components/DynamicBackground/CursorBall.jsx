@@ -15,34 +15,41 @@ export default function CursorBall({ radius = 35, trailing = 0.18 }) {
     
     // --- Effect for the Trailing Animation (rAF) ---
     useEffect(() => {
+        // We only proceed if the cursorRef object has been initialized by the Provider
         if (!cursorRef?.current) return;
         
-        // Initial position setup
+        // Initial position setup: Start the local ball position at the cursor's current position
         const initialCursorPos = cursorRef.current; 
         pos.current.x = initialCursorPos.x;
         pos.current.y = initialCursorPos.y;
 
         let animationFrame;
+        
+        // The core animation loop
         const animate = () => {
-            // Smoothly trail the target position from the shared ref
-            pos.current.x += (cursorRef.current.x - pos.current.x) * trailing; 
-            pos.current.y += (cursorRef.current.y - pos.current.y) * trailing;
+            const targetX = cursorRef.current.x;
+            const targetY = cursorRef.current.y;
+
+            // Smoothly trail the target position using the 'trailing' factor
+            pos.current.x += (targetX - pos.current.x) * trailing; 
+            pos.current.y += (targetY - pos.current.y) * trailing;
             
             if (ballRef.current) {
-                // Use translate3d for GPU acceleration
+                // Use translate3d for GPU acceleration (always preferred over translate)
+                // We subtract 'radius' to center the ball element (whose size is 2*radius) 
                 ballRef.current.style.transform = `translate3d(${pos.current.x - radius}px, ${pos.current.y - radius}px, 0)`;
             }
             animationFrame = requestAnimationFrame(animate);
         };
-        animate();
+        
+        animate(); // Start the loop
 
         return () => {
-            cancelAnimationFrame(animationFrame);
+            // Cleanup on unmount or dependency change
+            cancelAnimationFrame(animationFrame); 
         };
     // Dependencies only include props that affect the animation math
     }, [radius, trailing]); 
-
-    // The dimming logic (previously in a second useEffect) is now entirely managed by the Provider.
 
     return (
         <div 
@@ -50,6 +57,7 @@ export default function CursorBall({ radius = 35, trailing = 0.18 }) {
             // Apply the 'dimmed' class based on the state received from the Context
             className={`cursor-ball ${isInteractive ? "dimmed" : ""}`} 
             style={{
+                // Set the size dynamically
                 width: `${radius * 2}px`,
                 height: `${radius * 2}px`,
             }}

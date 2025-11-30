@@ -19,25 +19,28 @@ const itemVariants = {
     visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
 };
 
-export default function About() {
-    // Break the text into logical parts for individual animation
+export default function About({ id }) { // Accept id prop if passed from map
+    
+    // 1. REFINE TEXT PARTS: Use a standardized object structure for clarity
     const textParts = [
-        "I am ",
-        // IMPROVEMENT: Using <strong> communicates semantic importance.
-        <strong key="name">Soumyadeep Chakravarti</strong>,
-        " a ",
-        <strong key="role">full-stack developer</strong>,
-        " with experience building ",
-        <strong key="apps">interactive, user-friendly web applications</strong>,
-        ". I enjoy transforming ideas into real-world solutions using modern web technologies and a passion for clean, performant code.",
+        { content: "I am " },
+        { content: "Soumyadeep Chakravarti", highlight: true, key: "name" },
+        { content: ", a " },
+        { content: "full-stack developer", highlight: true, key: "role" },
+        { content: ", with experience building " },
+        { content: "interactive, user-friendly web applications", highlight: true, key: "apps" },
+        { content: ". I enjoy transforming ideas into real-world solutions using modern web technologies and a passion for clean, performant code." },
     ];
+
+    // Define the special styles for highlighted parts
+    const highlightClasses = "font-extrabold text-teal-600 dark:text-teal-400 border-b-2 border-teal-600 dark:border-teal-400 inline-block px-1 mx-0.5";
 
     return (
         <section
-            id="about"
+            id={id || "about"} // Use prop ID or default to 'about'
             className="min-h-screen flex flex-col justify-center items-center text-center px-4 py-20 relative 
-                       bg-gradient-to-b from-white/80 to-white/40 dark:from-background/30 dark:to-background/60 
-                       xl:px-8 2xl:px-16 overflow-hidden" 
+                        bg-gradient-to-b from-white/80 to-white/40 dark:from-background/30 dark:to-background/60 
+                        xl:px-8 2xl:px-16 overflow-hidden"
         >
             <SectionTitle text="About Me" />
 
@@ -48,19 +51,16 @@ export default function About() {
                 whileInView="visible"
                 viewport={{ once: true, amount: 0.3 }}
             >
+                {/* 2. SIMPLIFIED MAPPING LOGIC */}
                 {textParts.map((part, index) => (
                     <motion.span
-                        key={index}
+                        key={part.key || index} // Use unique key from object or index fallback
                         variants={itemVariants}
-                        className={
-                            typeof part === 'string'
-                                ? ''
-                                : // Apply bold styling to the strong/highlighted parts
-                                  "font-extrabold text-teal-600 dark:text-teal-400 border-b-2 border-teal-600 dark:border-teal-400 inline-block px-1 mx-0.5"
-                        }
+                        // Conditionally apply classes based on the object flag
+                        className={part.highlight ? highlightClasses : ''}
                     >
-                        {/* Render the part: either a string or the children of the strong element */}
-                        {typeof part === 'object' && part.type === 'strong' ? part.props.children : part}
+                        {/* Use a <strong> tag for semantic importance when highlighting */}
+                        {part.highlight ? <strong>{part.content}</strong> : part.content}
                     </motion.span>
                 ))}
             </motion.div>

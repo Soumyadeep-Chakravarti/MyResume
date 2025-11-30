@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { motion, useReducedMotion } from 'framer-motion'; // <-- Added useReducedMotion
+import { motion, useReducedMotion } from 'framer-motion';
 
 // --- Configuration ---
 const NAME = "Soumyadeep Chakravarti";
@@ -59,43 +59,52 @@ function Hero() {
     // Select the appropriate character variants
     const finalCharVariants = shouldReduceMotion ? reducedCharVariants : baseCharVariants;
 
+    // Conditionally set the background animation transition properties
+    const backgroundTransition = shouldReduceMotion
+        ? { duration: 0 } // Stop the animation instantly
+        : {
+            duration: 25,
+            repeat: Infinity,
+            ease: "easeInOut",
+            repeatType: "yoyo",
+        };
+
+    // Conditionally set the background animate properties
+    const backgroundAnimate = shouldReduceMotion
+        ? { opacity: 0.1, scale: 1, x: '0%', y: '0%' } // Static, subtle state
+        : {
+            opacity: [0.1, 0.3, 0.1],
+            scale: [1, 1.2, 1],
+            x: ['-50%', '50%', '-50%'],
+            y: ['50%', '-50%', '50%'],
+        };
+
+
     return (
         <section
             id="hero"
-            // Ensure section background transition is smooth
             className="min-h-screen flex flex-col justify-center items-center text-center px-4 
                         bg-transparent dark:bg-black/30 transition-colors duration-500 relative overflow-hidden"
         >
-            {/* Dynamic Background Element */}
+            {/* Dynamic Background Element - Motion reduced implementation */}
             <motion.div 
-                // Added will-change-transform for performance hint
                 className="absolute w-40 h-40 md:w-64 md:h-64 bg-teal-500/20 dark:bg-teal-400/10 rounded-full blur-3xl will-change-transform"
                 initial={{ opacity: 0, scale: 0.8 }}
-                animate={{
-                    opacity: [0.1, 0.3, 0.1], 
-                    scale: [1, 1.2, 1], 
-                    x: ['-50%', '50%', '-50%'], 
-                    y: ['50%', '-50%', '50%'], 
-                }}
-                transition={{
-                    duration: 25,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                    repeatType: "yoyo", // Changed to yoyo
-                }}
+                animate={backgroundAnimate}
+                transition={backgroundTransition}
             />
             
             <motion.div
-                className="max-w-4xl relative z-10 transition-colors duration-500" // Added transition to container
+                className="max-w-4xl relative z-10 transition-colors duration-500"
                 variants={containerVariants}
                 initial="hidden"
                 animate="visible"
             >
                 {/* Semantic H1 with Wavy/Staggered Text Animation */}
                 <motion.h1
-                    className="text-4xl sm:text-6xl md:text-7xl font-extrabold text-gray-900 dark:text-white mb-4 whitespace-nowrap md:whitespace-normal transition-colors duration-500" // Added text color transition
+                    className="text-4xl sm:text-6xl md:text-7xl font-extrabold text-gray-900 dark:text-white mb-4 whitespace-nowrap md:whitespace-normal transition-colors duration-500"
                     variants={itemVariants} 
-                    aria-label={NAME} // Added for screen reader accessibility
+                    aria-label={NAME}
                 >
                     {NAME.split(" ").map((word, wordIndex) => (
                         <motion.span 
@@ -106,7 +115,7 @@ function Hero() {
                             {word.split("").map((char, charIndex) => (
                                 <motion.span 
                                     key={`${wordIndex}-${charIndex}`} 
-                                    variants={finalCharVariants} // Use conditional variant
+                                    variants={finalCharVariants}
                                     className="inline-block"
                                 >
                                     {char}
@@ -118,7 +127,7 @@ function Hero() {
                 </motion.h1>
 
                 <motion.p
-                    className="mt-6 text-xl md:text-2xl max-w-2xl text-gray-600 dark:text-gray-300 font-light mx-auto transition-colors duration-500" // Added text color transition
+                    className="mt-6 text-xl md:text-2xl max-w-2xl text-gray-600 dark:text-gray-300 font-light mx-auto transition-colors duration-500"
                     variants={itemVariants} 
                 >
                     A{' '}
@@ -132,29 +141,17 @@ function Hero() {
                 <motion.div
                     className="mt-12 flex flex-col sm:flex-row justify-center gap-4"
                 >
-                    <motion.a // Changed to motion.a
+                    <motion.a
                         href="#projects"
                         variants={itemVariants}
                         whileHover="hover"
                         whileTap="tap"
                         className="px-8 py-3 rounded-full text-white font-semibold transition-all duration-300
-                                       bg-teal-600 hover:bg-teal-700 shadow-lg hover:shadow-xl active:scale-95 whitespace-nowrap focus:ring-4 focus:ring-teal-500/50" // Enhanced hover/focus
+                                    bg-teal-600 hover:bg-teal-700 shadow-lg hover:shadow-xl active:scale-95 whitespace-nowrap 
+                                    focus:ring-4 focus:ring-teal-500/50 focus:outline-none" // Focus improvement
                     >
                         View Projects
                     </motion.a>
-                    {/*<motion.a // Changed to motion.a
-                        href="/resume.pdf"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        variants={itemVariants}
-                        whileHover="hover"
-                        whileTap="tap"
-                        className="px-8 py-3 rounded-full font-semibold transition-all duration-300
-                                       text-teal-600 border-2 border-teal-600 dark:text-teal-400 dark:border-teal-400
-                                       hover:bg-teal-50 dark:hover:bg-gray-800 active:scale-95 whitespace-nowrap focus:ring-4 focus:ring-teal-500/50 dark:focus:ring-teal-400/50" // Enhanced hover/focus
-                    >
-                        Download Resume
-                    </motion.a>*/}
                 </motion.div>
             </motion.div>
         </section>

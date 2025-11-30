@@ -3,6 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App.jsx'; // Corrected: default import, no curly braces
 import './index.css';
+import './r3f-extensions.js';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

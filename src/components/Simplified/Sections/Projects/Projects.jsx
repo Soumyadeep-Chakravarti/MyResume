@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import SectionTitle from '../../UI/SectionTitle';
 import Card from '../../UI/Card'; 
+import { Github } from 'lucide-react'; // Added Github icon for link
 
 const GITHUB_USERNAME = 'Soumyadeep-Chakravarti';
 const CACHE_KEY = 'github_repos_cache';
@@ -44,48 +45,49 @@ const useGitHubRepos = () => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        let isMounted = true; 
-        let shouldFetch = true; 
+        let isMounted = true;
+        let shouldFetch = true;
+        let cachedData = null;
         
-        // **CRITICAL FIX: Robust Local Storage Error Handling**
+        // 1. Check Cache
         try {
             const cachedItem = localStorage.getItem(CACHE_KEY);
-            
             if (cachedItem) {
                 const parsedCache = JSON.parse(cachedItem);
 
-                // Defensive check against corrupt/malformed cache data
-                if (parsedCache && parsedCache.data && parsedCache.timestamp) {
+                if (parsedCache?.data && parsedCache?.timestamp) {
                     const { data, timestamp } = parsedCache;
                     const isCacheExpired = Date.now() - timestamp > CACHE_EXPIRY_MS;
                     
                     if (isMounted) setRepos(data);
                     
-                    shouldFetch = isCacheExpired;
-                    setLoading(shouldFetch);
+                    if (!isCacheExpired) {
+                        shouldFetch = false;
+                        setLoading(false);
+                    } else {
+                        // Cache exists but is expired (Stale While Revalidate)
+                        setLoading(true); // Keep loading state true to show we're refreshing
+                    }
+                    
                 } else {
-                    // Item exists but is bad JSON structure
+                    // Invalid cache structure - clear it and force fetch
                     localStorage.removeItem(CACHE_KEY);
-                    setLoading(true); 
-                    shouldFetch = true;
                 }
             } else {
-                // No cache found
-                setLoading(true);
-                shouldFetch = true;
+                 // No cache found - force fetch, loading state is already true
             }
         } catch (e) {
-            // Catches SecurityError (Local Storage Blocked) or JSON.parse errors
-            console.error("Local Storage Error:", e);
+            // Local Storage access denied or JSON parsing error
+            console.error("Local Storage Error. Fetching directly.", e);
             localStorage.removeItem(CACHE_KEY);
-            setLoading(true);
-            shouldFetch = true;
+            // Loading remains true, shouldFetch remains true
         }
 
-        // --- Fetch Logic (Only runs if needed) ---
+        // 2. Fetch Logic (runs if no valid cache, or cache is expired)
         if (shouldFetch) {
             const fetchRepos = async () => {
-                if (repos.length === 0 && isMounted) setLoading(true); 
+                // Ensure loading indicator is visible if we don't have existing repos (from expired cache)
+                if (repos.length === 0 && isMounted) setLoading(true);
 
                 try {
                     const response = await fetch(
@@ -98,55 +100,58 @@ const useGitHubRepos = () => {
                     
                     const data = await response.json();
                     const filtered = data
-                        .filter((repo) => !repo.fork)
+                        .filter((repo) => !repo.fork) // Exclude forks
                         .map(({ name, description, html_url, stargazers_count, language, updated_at }) => ({
                             title: name,
                             subtitle: description || 'No description provided.',
                             link: html_url,
                             stars: stargazers_count,
                             language: language || 'N/A',
-                            updatedAt: new Date(updated_at).toLocaleDateString('en-US'),
+                            // Use a consistent, readable format
+                            updatedAt: new Date(updated_at).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }),
                         }));
                         
-                    if (isMounted) { 
+                    if (isMounted) {
                         setRepos(filtered);
-                        localStorage.setItem(CACHE_KEY, JSON.stringify({ data: filtered, timestamp: Date.now() })); 
+                        // Save new data to cache
+                        localStorage.setItem(CACHE_KEY, JSON.stringify({ data: filtered, timestamp: Date.now() }));
                         setError(null);
                     }
                 } catch (err) {
                     console.error("GitHub Fetch Error:", err);
-                    if (repos.length === 0 && isMounted) { 
-                        setError('Failed to load projects. Please try again later.');
+                    // Only set error if we couldn't load anything (no cached data)
+                    if (repos.length === 0 && isMounted) {
+                        setError('Failed to load projects. Please check your connection or GitHub access.');
                     }
                 } finally {
-                    if (isMounted) { 
+                    if (isMounted) {
                         setLoading(false);
                     }
                 }
             };
             fetchRepos();
-        } else {
-            setLoading(false);
         }
         
         return () => { isMounted = false; };
         
-    }, []); 
+    }, []); // Empty dependency array ensures run once
 
     return { repos, loading, error };
 };
 // ---------------------------------------------------------------------
 
-export default function Projects() {
+export default function Projects({ id }) {
     const { repos, loading, error } = useGitHubRepos();
 
+    // Show skeletons only if loading AND we have no existing data (to prevent flashing)
     const showSkeletons = loading && repos.length === 0;
-    // Defensive check ensures displayRepos is always an array for the map operation
-    const displayRepos = showSkeletons ? Array(6).fill(null) : repos || []; 
+    
+    // Prepare data: 6 placeholders if loading, otherwise the fetched repos
+    const displayRepos = showSkeletons ? Array(6).fill(null) : repos; 
 
     if (error && repos.length === 0)
         return (
-            <section id="projects" className="min-h-screen flex justify-center items-center bg-gray-100 dark:bg-[#131722]">
+            <section id={id || "projects"} className="min-h-screen flex justify-center items-center bg-gray-100 dark:bg-[#131722] py-20">
                 <p className="text-red-500 dark:text-red-400 p-4 border border-red-500 rounded-lg">
                     ⚠️ {error}
                 </p>
@@ -155,25 +160,26 @@ export default function Projects() {
 
     return (
         <section
-            id="projects"
+            id={id || "projects"}
             className="min-h-screen flex flex-col justify-center items-center px-4 py-20 
-                      bg-gray-100 dark:bg-[#131722] transition-colors duration-500"
+                     bg-gray-100 dark:bg-[#131722] transition-colors duration-500"
         >
             <SectionTitle text="Projects" />
 
             <motion.div
                 className="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl w-full"
                 initial="hidden"
-                whileInView="visible" // Parent triggers animation when in view
+                whileInView="visible"
                 viewport={{ once: true, amount: 0.2 }}
                 variants={{
-                    visible: { transition: { staggerChildren: 0.1 } } // Parent defines stagger timing
+                    visible: { transition: { staggerChildren: 0.1 } }
                 }}
             >
                 {displayRepos.map((repo, index) => (
                     <motion.div
-                        key={repo?.title || index}
-                        variants={itemVariants} // Child uses variants for animation
+                        // Use unique key from repo title or index for skeletons
+                        key={repo?.title || index} 
+                        variants={itemVariants}
                     >
                         {showSkeletons ? (
                             <SkeletonCard />
@@ -195,9 +201,10 @@ export default function Projects() {
                 href={`https://github.com/${GITHUB_USERNAME}`} 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="mt-12 text-teal-600 dark:text-teal-400 font-semibold text-lg hover:underline transition-colors duration-300"
+                className="mt-12 inline-flex items-center gap-2 text-teal-600 dark:text-teal-400 font-semibold text-lg hover:underline transition-colors duration-300"
             >
-                View All Projects on GitHub &rarr;
+                <Github size={20} />
+                View All Projects on GitHub
             </a>
 
         </section>
