@@ -1,4 +1,4 @@
-// src/components/Transition/ScrollTransitionZone.jsx (Final Corrected)
+// src/components/Transition/ScrollTransitionZone.jsx (Fixed)
 import React, { useRef, useCallback, useEffect, useMemo } from 'react';
 import { motion, useScroll, useTransform, useSpring, useMotionValue } from 'framer-motion';
 import { useCinematic } from '../../context/CinematicModeContext.jsx';
@@ -6,7 +6,6 @@ import { FiArrowUpRight } from 'react-icons/fi';
 
 // --- Custom Hook for Physics and Parallax ---
 const useAdvancedScrollEffects = (containerRef) => {
-    
     // 1. SCROLL PROGRESS (Hooks at Top Level)
     const { scrollYProgress } = useScroll({
         target: containerRef,
@@ -140,14 +139,15 @@ export default function ScrollTransitionZone() {
     return (
         <section
             ref={containerRef}
-            // Retain the height to allow for scrolling
+            // The outer container already has 'relative'
             className="relative h-[400vh] w-full" 
             role="region"
             aria-label="Scroll transition zone with parallax"
             onMouseMove={handleMouseMove} // Attach mouse handler
         >
             {/* The sticky container holds the 2D visual elements */}
-            <div className="sticky top-0 h-screen flex items-center justify-center overflow-hidden perspective-[1000px] z-20">
+            {/* FIX APPLIED HERE: Added 'relative' to the sticky container for Framer Motion projection */}
+            <div className="sticky top-0 h-screen flex items-center justify-center overflow-hidden perspective-[1000px] z-20 relative">
                 
                 {/* 1. Background Element (Simple 2D Parallax/Tilt Overlay) */}
                 <motion.div

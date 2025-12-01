@@ -8,7 +8,7 @@ import { CinematicProvider } from './context/CinematicModeContext.jsx';
 import { CursorProvider } from './context/CursorContext.jsx';
 
 import CursorBall from './components/DynamicBackground/CursorBall.jsx';
-import { MainContent } from './MainContent.jsx';
+import MainContent from './MainContent.jsx';
 
 /**
  * Optimized Context Provider Composition

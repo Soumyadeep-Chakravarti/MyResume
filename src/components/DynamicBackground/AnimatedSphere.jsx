@@ -1,61 +1,54 @@
 // src/components/DynamicBackground/AnimatedSphere.jsx
+import React, { useRef, forwardRef } from "react";
+import { useFrame } from "@react-three/fiber";
+import * as THREE from "three";
 
-import React, { useRef, useMemo, forwardRef } from 'react'; 
-import { useFrame } from '@react-three/fiber';
-import * as THREE from 'three'; 
-
-// Use forwardRef to allow the parent component (CinematicWorld) to pass a ref 
-// to this component, which we attach to the <mesh>.
 const AnimatedSphere = forwardRef(function AnimatedSphere(
-    { isTransitioning, isActive }, // Props
-    ref // The forwarded ref
+  { isTransitioning, isActive }, // Props
+  ref // Forwarded ref
 ) {
-    // We still use local refs for internal logic that doesn't need external access
-    const materialRef = useRef();
-    const clockRef = useRef(new THREE.Clock());
+  const materialRef = useRef();
+  const opacityRef = useRef(0);
+  const scaleRef = useRef(0.1);
 
-    const opacityRef = useRef(0);
-    const scaleRef = useRef(0.1);
+  useFrame((state, delta) => {
+    if (!ref.current || !materialRef.current) return;
 
-    useFrame((state, delta) => {
-        if (!ref.current || !materialRef.current) return;
+    // 1. Continuous rotation
+    ref.current.rotation.y += delta * 0.5;
+    ref.current.rotation.x += delta * 0.3;
 
-        // 1. Continuous Rotation
-        ref.current.rotation.y += delta * 0.5;
-        ref.current.rotation.x += delta * 0.3;
+    // 2. Animate opacity & scale
+    const transitionSpeed = 5;
 
-        // 2. Animate Opacity and Scale
-        const transitionSpeed = 5;
+    const targetOpacity = isActive || isTransitioning ? 1 : 0;
+    const targetScale = isActive || isTransitioning ? 1 : 0.1;
 
-        if (isActive) {
-            opacityRef.current = Math.min(1, opacityRef.current + delta * transitionSpeed);
-            scaleRef.current = Math.min(1, scaleRef.current + delta * transitionSpeed);
-        } else {
-            opacityRef.current = Math.max(0, opacityRef.current - delta * transitionSpeed);
-            scaleRef.current = Math.max(0.1, scaleRef.current - delta * transitionSpeed);
-        }
-        
-        // 3. Apply values
-        materialRef.current.opacity = opacityRef.current;
-        ref.current.scale.setScalar(scaleRef.current);
-    });
+    opacityRef.current += (targetOpacity - opacityRef.current) * delta * transitionSpeed;
+    scaleRef.current += (targetScale - scaleRef.current) * delta * transitionSpeed;
 
-    return (
-        <mesh
-            ref={ref} // CRITICAL: Attach the forwarded ref to the Three.js mesh
-            position={[0, 0, -5]}
-            scale={scaleRef.current}
-        >
-            <sphereGeometry args={[1, 32, 32]} />
-            <meshStandardMaterial
-                ref={materialRef}
-                color={isTransitioning ? "cyan" : "gold"}
-                wireframe={isTransitioning}
-                transparent
-                opacity={0}
-            />
-        </mesh>
-    );
+    // 3. Apply values
+    materialRef.current.opacity = opacityRef.current;
+    ref.current.scale.setScalar(scaleRef.current);
+  });
+
+  return (
+    <mesh
+      ref={ref}
+      position={[0, 0, -5]}
+      scale={scaleRef.current} // initial scale
+    >
+      <sphereGeometry args={[1, 32, 32]} />
+      <meshStandardMaterial
+        ref={materialRef}
+        color={isTransitioning ? "cyan" : "gold"}
+        wireframe={isTransitioning}
+        transparent
+        opacity={0} // start fully transparent
+      />
+    </mesh>
+  );
 });
 
 export default AnimatedSphere;
+

@@ -1,79 +1,73 @@
-import React, { useRef, Suspense, useMemo, useCallback, useContext } from "react";
+import React, {
+	useRef,
+	useContext,
+	useMemo,
+	Suspense,
+} from "react";
 
 import { sections } from "./ComponentsRegistry.js";
-import SectionNav from './UI/SectionNav.jsx';
-import NavBar from './UI/NavBar.jsx';
-import { CursorContext } from '../../context/CursorContext.jsx';
-import { useIsMobile } from '../../hooks/useIsMobile.js';
-import { useSectionObserver } from '../../hooks/useSectionObserver.js';
+import NavBar from "./UI/NavBar.jsx";
+import SectionNav from "./UI/SectionNav.jsx";
 
-// Define Stable Section IDs (Good Practice)
-const SECTION_IDS = ['hero', 'about', 'skills', 'projects', 'contact'];
+import { CursorContext } from "../../context/CursorContext.jsx";
+import { useIsMobile } from "../../hooks/useIsMobile.js";
+import { useSectionObserver } from "../../hooks/useSectionObserver.js";
 
-// Lazy-load backgrounds
-const Aquarium = React.lazy(() => import('../DynamicBackground/Aquarium.jsx'));
-
+const SECTION_IDS = ["hero", "about", "skills", "projects", "contact"];
+const Aquarium = React.lazy(() => import("../DynamicBackground/Aquarium.jsx"));
 
 export default function SimplifiedResume() {
-	// 1. Context and Hook Integration
-	// Use object destructuring for cleaner access
-	const { cursorRef: globalCursorRef } = useContext(CursorContext) || {};
-	
+	// Cursor Context with guaranteed ref fallback
+	const ctx = useContext(CursorContext);
+	const fallbackCursor = useRef({ x: 0, y: 0 });
+	const cursorRef = ctx?.cursorRef ?? fallbackCursor;
+
 	const isMobile = useIsMobile();
 	const activeSectionId = useSectionObserver(SECTION_IDS);
 
-	// 2. Cursor Position Access (Simplified)
-	// The Aquarium component needs the REF, not the extracted value, but we can simplify the ternary.
-	// NOTE: It is best practice to pass the REF to the external component if possible, 
-	// rather than extracting .current here, as done below.
-	
-	// const cursorPosition = globalCursorRef?.current || { x: 0, y: 0 }; // Not needed for Aquarium
+	// Render all page sections with perfect ID-index sync
+	const renderedSections = useMemo(() => {
+		return sections.map((Section, idx) => {
+			const id = SECTION_IDS[idx];
+			if (!id || !Section) return null;
 
-	// 3. Memoized Sections (Refactored for cleaner logic)
-	const renderedSections = useMemo(() =>
-		sections.map((Section, index) => {
-			// Ensure a valid ID exists for the section
-			const id = SECTION_IDS[index];
-			if (!id) {
-				console.error(`Missing ID for section at index ${index}.`);
-				return null;
-			}
-			
 			return (
 				<Suspense
-					// Use the stable ID as the key
 					key={id}
-					fallback={<div className="text-center py-20 text-gray-400">Loading {id} Section...</div>}
+					fallback={
+						<div className="text-center py-20 text-gray-400">
+							Loading {id}…
+						</div>
+					}
 				>
-					{/* Pass the section ID as a prop */}
 					<Section id={id} />
 				</Suspense>
 			);
-		}), [SECTION_IDS] // IMPORTANT: List SECTION_IDS as dependency if it were defined outside the module scope
-	);
-
-	// 4. Placeholder for Future Callbacks (Best Practice)
-	// Example: If you were to add an event handler here later, you'd use useCallback:
-	// const handleButtonClick = useCallback(() => { /* ... */ }, []);
-
+		});
+	}, []); // Completely stable — no re-renders needed
 
 	return (
-		<div
-			className="simplified-resume relative min-h-screen"
-		>
-			<Suspense fallback={null}>
-				{/* Pass the REF directly. Handle null safely in case context is missing. */}
-				<Aquarium numBalls={50} cursorRef={globalCursorRef || useRef({ x: 0, y: 0 })} />
+		<div className="simplified-resume relative min-h-screen">
+
+			{/* Background */}
+			<Suspense fallback={<div className="absolute inset-0 bg-black/40" />}>
+				<Aquarium numBalls={50} cursorRef={cursorRef} />
 			</Suspense>
 
-			{/* Pass Active Section ID to Navigation Components */}
+			{/* Navigation */}
 			<NavBar activeSectionId={activeSectionId} sectionIds={SECTION_IDS} />
-			{/* Pass sectionIds list to SectionNav as well, in case it needs to render the links */}
-			{!isMobile && <SectionNav activeSectionId={activeSectionId} sectionIds={SECTION_IDS} />}
+			{!isMobile && (
+				<SectionNav
+					activeSectionId={activeSectionId}
+					sectionIds={SECTION_IDS}
+				/>
+			)}
 
+			{/* Page Sections */}
 			<div className="relative z-10">
 				{renderedSections}
 			</div>
 		</div>
 	);
 }
+
