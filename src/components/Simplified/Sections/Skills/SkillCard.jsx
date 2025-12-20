@@ -1,37 +1,59 @@
 import React, { memo, useMemo } from "react";
 import { motion } from "framer-motion";
+import { FiChevronRight } from 'react-icons/fi'; // Icon for detail hint
 
-// Removed UPDATED_AT constant as it's being removed from the card body.
+// ===============================================
+// II. HELPER: Dynamic Level Styling
+// ===============================================
 
-// The SkillCard now only accepts the required props.
-const SkillCard = memo(({ name, level, icon: Icon, color, variants }) => {
+/**
+ * Maps the skill level string to a distinct Tailwind CSS class for visual emphasis.
+ * @param {string} level - The skill level (e.g., 'Expert', 'Intermediate').
+ * @returns {string} Tailwind CSS classes for color/style.
+ */
+const getLevelClass = (level) => {
+    switch (level) {
+        case "Expert":
+            return "text-green-600 dark:text-green-400 font-bold";
+        case "Intermediate":
+            return "text-yellow-600 dark:text-yellow-400 font-semibold";
+        case "Familiar":
+            return "text-blue-600 dark:text-blue-400 font-medium";
+        default:
+            return "text-gray-500 dark:text-gray-400";
+    }
+};
 
-    // Memoize the style object to prevent unnecessary re-renders of Icon components.
+// ===============================================
+// MAIN COMPONENT
+// ===============================================
+// Added 'description' to props list (I)
+const SkillCard = memo(({ name, level, icon: Icon, color, variants, description }) => {
+
     const iconStyle = useMemo(() => {
-        // Only apply 'color' if it's not the special HTML & CSS component.
         return name !== "HTML & CSS" ? { color } : {};
     }, [name, color]);
 
+    const levelClass = useMemo(() => getLevelClass(level), [level]);
+
+    // III. Reduced glow inset for tighter effect
+    const glowInsetClass = "absolute -inset-2 rounded-xl blur-2xl z-0 opacity-0 group-hover:opacity-100";
+
+
     return (
         <motion.div
-            // Framer Motion Stagger Integration: Receives variants from the parent container.
             variants={variants}
-            
-            // Accessibility Improvement
             role="listitem"
             tabIndex={0}
-
-            // Interactive Effects and Group Class
             className="relative group w-full focus-within:ring-4 focus-within:ring-teal-400 
                        focus-within:ring-offset-4 focus-within:ring-offset-gray-100 dark:focus-within:ring-offset-[#131722] 
                        rounded-xl cursor-pointer"
             whileHover={{ scale: 1.05, boxShadow: '0 10px 20px rgba(0,0,0,0.15), 0 6px 10px rgba(0,0,0,0.08)' }} 
             transition={{ type: "spring", stiffness: 300, damping: 25 }}
         >
-            {/* Dynamic Glow Effect */}
+            {/* Dynamic Glow Effect (III) */}
             <div
-                className="absolute -inset-6 rounded-xl blur-3xl z-0 opacity-0 group-hover:opacity-100 
-                           transition-opacity duration-300"
+                className={`${glowInsetClass} transition-opacity duration-300`}
                 style={{ backgroundColor: color || '#86efac', opacity: 0.3 }}
             />
 
@@ -51,13 +73,20 @@ const SkillCard = memo(({ name, level, icon: Icon, color, variants }) => {
                     {name}
                 </h3>
 
-                {/* Level (Subtitle) */}
-                <p className="text-sm font-semibold text-teal-600 dark:text-teal-400 uppercase">
+                {/* Level (Subtitle) - Using dynamic class (II) */}
+                <p className={`text-sm uppercase ${levelClass} mb-3`}>
                     {level}
                 </p>
-
-                {/* **IMPROVEMENT**: Removed the redundant 'Updated' date for cleaner UI. */}
                 
+                {/* I. Detail Hint (Only visible on hover/focus) */}
+                {description && (
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-2 flex items-center 
+                                  opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        {/* We use an icon to hint at 'more detail' */}
+                        View Detail 
+                        <FiChevronRight className="w-3 h-3 ml-1 transition-transform group-hover:translate-x-1" />
+                    </p>
+                )}
             </div>
         </motion.div>
     );

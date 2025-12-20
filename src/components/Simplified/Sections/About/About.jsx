@@ -9,58 +9,64 @@ const containerVariants = {
     visible: {
         opacity: 1,
         transition: {
-            staggerChildren: 0.15, // Delay between each child animation
+            staggerChildren: 0.1, // Fluent stagger
         },
     },
 };
 
 const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+    hidden: { opacity: 0, y: 15 }, // Subtle lift-in animation
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
 };
 
-export default function About() {
-    // Break the text into logical parts for individual animation
-    const textParts = [
-        "I am ",
-        // IMPROVEMENT: Using <strong> communicates semantic importance.
-        <strong key="name">Soumyadeep Chakravarti</strong>,
-        " a ",
-        <strong key="role">full-stack developer</strong>,
-        " with experience building ",
-        <strong key="apps">interactive, user-friendly web applications</strong>,
-        ". I enjoy transforming ideas into real-world solutions using modern web technologies and a passion for clean, performant code.",
-    ];
+// --- Content and Spacing: Using mixed array for guaranteed spacing ---
+const ARCHITECT_BIO_PARTS = [
+    "My name is ",
+    <strong key="name">Soumyadeep Chakravarti</strong>,
+    ". I am a dedicated ", 
+    <strong key="role">Full-Spectrum Software Architect</strong>,
+    ", passionate about engineering ", 
+    <strong key="systems">resilient, high-performance systems</strong>,
+    " from the user interface to the underlying cloud infrastructure.",
 
+    <span key="spacer">&nbsp;</span>, 
+    "My focus is on strategic problem-solving, architectural design, and automating the entire development lifecycle for maximum operational stability."
+];
+
+// --- IMPROVEMENT: Replaced underline with drop-shadow for visual pop ---
+const highlightClass = "font-semibold text-teal-700 dark:text-teal-300 transition-colors duration-300 inline-block drop-shadow-sm dark:drop-shadow-md";
+
+
+export default function About({ id }) {
     return (
         <section
-            id="about"
+            id={id || "about"} // Accept id prop for clean integration
             className="min-h-screen flex flex-col justify-center items-center text-center px-4 py-20 relative 
                        bg-gradient-to-b from-white/80 to-white/40 dark:from-background/30 dark:to-background/60 
                        xl:px-8 2xl:px-16 overflow-hidden" 
         >
-            <SectionTitle text="About Me" />
+            <SectionTitle text="Architectural Overview" />
 
             <motion.div
-                className="mt-6 text-lg md:text-xl max-w-3xl text-gray-800 dark:text-gray-200 leading-relaxed"
+                className="mt-8 text-lg md:text-xl max-w-4xl text-gray-800 dark:text-gray-200 leading-relaxed font-light"
                 variants={containerVariants}
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, amount: 0.3 }}
             >
-                {textParts.map((part, index) => (
+                {ARCHITECT_BIO_PARTS.map((part, index) => (
                     <motion.span
                         key={index}
                         variants={itemVariants}
                         className={
-                            typeof part === 'string'
-                                ? ''
-                                : // Apply bold styling to the strong/highlighted parts
-                                  "font-extrabold text-teal-600 dark:text-teal-400 border-b-2 border-teal-600 dark:border-teal-400 inline-block px-1 mx-0.5"
+                            (typeof part === 'object' && part.type !== 'strong') 
+                                ? "inline-block"
+                                : (typeof part === 'object' && part.type === 'strong') 
+                                    ? highlightClass // Apply shadow/glow here
+                                    : ''
                         }
                     >
-                        {/* Render the part: either a string or the children of the strong element */}
-                        {typeof part === 'object' && part.type === 'strong' ? part.props.children : part}
+                        {typeof part === 'object' ? part : part}
                     </motion.span>
                 ))}
             </motion.div>

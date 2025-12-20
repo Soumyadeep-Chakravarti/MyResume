@@ -1,6 +1,6 @@
 // src/components/Simplified/SimplifiedResume.jsx
 
-import React, { useRef, Suspense, useMemo, useCallback } from "react";
+import React, { useRef, Suspense, useMemo, useCallback, memo } from "react";
 
 import { sections } from "./ComponentsRegistry.js";
 import SectionNav from './UI/SectionNav.jsx';
@@ -40,18 +40,17 @@ export default function SimplifiedResume() {
     );
 
     // Memoized sections (Unchanged)
-    const renderedSections = useMemo(() =>
-        sections.map((Section, index) => (
+    // New way: iterating over the sections array which now contains both id and Component
+    const renderedSections = useMemo(() => {
+        return sections.map(({ id, Component: Section }) => ( // Use destructuring
             <Suspense
-                key={Section.name || index}
+                key={id} 
                 fallback={<div className="text-center py-20 text-gray-400">Loading Section...</div>}
             >
-                {/* IMPORTANT: Ensure your Section components render with the correct ID */}
-                <Section id={SECTION_IDS[index]} /> 
+                <Section id={id} />
             </Suspense>
-        )), []
-    );
-
+        ));
+    }, [sections]); // Only need 'sections' dependency if it's imported (it is)
     return (
         <CursorContext.Provider value={cursorValue}>
             <div 
