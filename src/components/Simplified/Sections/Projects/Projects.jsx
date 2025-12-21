@@ -122,18 +122,20 @@ const useGitHubRepos = () => {
                     }
 
                     const data = await response.json();
+                    
+                    // FIX: Only filter out forks. Use the map function to provide a fallback description.
                     const filtered = data
-                        .filter((repo) => !repo.fork && repo.description) 
+                        .filter((repo) => !repo.fork) // <--- Only filter out forks
                         .map(({ name, description, html_url, stargazers_count, language, updated_at, default_branch }) => ({
                             title: name,
-                            subtitle: description,
+                            // CRITICAL: Provide a sensible default if the description is null or empty.
+                            subtitle: description || 'No description provided by the repository owner.', 
                             link: html_url,
                             stars: stargazers_count,
                             language: language || 'N/A',
                             updatedAt: new Date(updated_at).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }),
-                            branch: default_branch // Added branch info for future expansion
+                            branch: default_branch 
                         }));
-
                     if (isMounted) {
                         setRepos(filtered);
                         try {

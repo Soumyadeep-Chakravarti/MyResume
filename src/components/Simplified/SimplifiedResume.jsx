@@ -50,7 +50,7 @@ export default function SimplifiedResume() {
                 <Section id={id} />
             </Suspense>
         ));
-    }, [sections]); // Only need 'sections' dependency if it's imported (it is)
+    }, []); // Only need 'sections' dependency if it's imported (it is)
     return (
         <CursorContext.Provider value={cursorValue}>
             <div 
