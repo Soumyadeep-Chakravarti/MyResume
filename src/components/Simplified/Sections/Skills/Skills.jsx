@@ -1,16 +1,20 @@
-import React, { memo, useMemo } from "react";
-import { motion } from "framer-motion";
+// src/sections/Skills.jsx - FINAL ARCHITECTURAL REVISION
+
+import React, { memo, useMemo, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import SectionTitle from "../../UI/SectionTitle.jsx";
 import SkillCard from './SkillCard.jsx';
-import { useIsMobile } from "../../../../hooks/useIsMobile.js";
+import SkillDetailPanel from '../../../Utils/SkillDetailPanel.jsx';
+import { useIsMobile } from "../../../../hooks/useIsMobile.js"; 
+import { Code, LayoutDashboard, Database, Settings, Zap } from "lucide-react";
 
 // ===============================================
-// 1. IMPORT ALL SKILL Data FILES
+// 1. ORIGINAL SKILL DATA IMPORTS (MUST BE KEPT)
 // ===============================================
 // --- Languages ---
 import JavaScriptSkillData from "./Data/Languages/JavaScript.jsx";
 import TypeScriptSkillData from "./Data/Languages/TypeScript.jsx";
-import PythonSkillData from "./Data/Languages/Python.jsx"; // <-- Primary Python data
+import PythonSkillData from "./Data/Languages/Python.jsx";
 import JavaSkillData from "./Data/Languages/Java.jsx";
 import KotlinSkillData from "./Data/Languages/Kotlin.jsx";
 import RustSkillData from "./Data/Languages/Rust.jsx";
@@ -28,14 +32,10 @@ import LinuxSkillData from "./Data/ToolsPlatforms/Linux.jsx";
 import WindowsSkillData from "./Data/ToolsPlatforms/Windows.jsx";
 
 // ===============================================
-// 2. REQUIRED ICON IMPORTS
+// 2. REQUIRED ICON IMPORTS & LOCAL DEFINITIONS (KEPT)
 // ===============================================
 import { SiHtml5, SiCss3, SiTensorflow, SiNumpy, SiGnubash } from "react-icons/si";
 
-
-// ===============================================
-// 3. MODULAR ICON COMPONENT FOR SPECIAL CASE (HTML/CSS)
-// ===============================================
 const HtmlCssIcon = ({ className, style }) => (
     <div className={`flex space-x-2 ${className}`} style={style}>
         <SiHtml5 className="w-10 h-10" style={{ color: "#E34F26" }} />
@@ -44,76 +44,85 @@ const HtmlCssIcon = ({ className, style }) => (
 );
 HtmlCssIcon.displayName = 'HtmlCssIcon';
 
-
-// ===============================================
-// 4. EXTENDED SKILL DATA
-// ===============================================
-// Adjusted description to reflect foundation
 const HtmlCssSkillData = {
     name: "HTML & CSS",
     description: "Semantic markup and modern styling.",
     icon: HtmlCssIcon,
     level: "Expert",
 };
-
-// --- Data Science & ML (Using separate data objects for reuse clarity) ---
-const TensorFlowSkillData = { 
-    name: "TensorFlow", 
-    description: "Deep Learning framework.", 
-    icon: SiTensorflow, 
-    level: "Intermediate" 
+const TensorFlowSkillData = { 
+    name: "TensorFlow", 
+    description: "Deep Learning framework.", 
+    icon: SiTensorflow, 
+    level: "Intermediate" 
 };
-const PandasSkillData = { 
-    name: "Pandas/NumPy", 
-    description: "Data manipulation and analysis.", 
-    icon: SiNumpy, 
-    level: "Expert" 
+const PandasSkillData = { 
+    name: "Pandas/NumPy", 
+    description: "Data manipulation and analysis.", 
+    icon: SiNumpy, 
+    level: "Expert" 
 };
-
-// --- System & Low-Level ---
-const ShellScriptingSkillData = { 
+const ShellScriptingSkillData = { 
     name: "Shell/Bash",
     description: "Automation and system tasks.",
     icon: SiGnubash,
-    level: "Expert" 
+    level: "Expert" 
 };
-// Reusing CSkillData.icon is a great idea
-const EmbeddedCSkillData = { 
-    name: "Embedded C", 
-    description: "Firmware and microcontrollers.", 
+const EmbeddedCSkillData = { 
+    name: "Embedded C", 
+    description: "Firmware and microcontrollers.", 
     icon: CSkillData.icon,
-    level: "Familiar" 
+    level: "Familiar" 
 };
 
 
 // ===============================================
-// 5. EXPANDED SKILL CATEGORIES (REVISED FOR CLARITY)
+// 3. OPTIMIZED CATEGORIES (Technologist Grouping)
 // ===============================================
 const ALL_SKILLS_DATA = {
-    "Languages & Foundations": [
+    // 1. The dialects
+    "Dialects": [
         HtmlCssSkillData, JavaScriptSkillData, TypeScriptSkillData, PythonSkillData, 
-        JavaSkillData, KotlinSkillData, RustSkillData, CSkillData, CPPSkillData,
+        CSkillData, CPPSkillData, JavaSkillData, KotlinSkillData, RustSkillData,
     ],
-    "Frameworks & Libraries": [
+    // 2. Application Development
+    "Frameworks & APIs": [
         ReactSkillData, NodeJsSkillData, TailwindSkillData,
     ],
-    "Data Science & ML": [ 
-        // Python is intentionally duplicated here to list the *same* skill in a different context
-        PythonSkillData, TensorFlowSkillData, PandasSkillData,
+    // 3. Infrastructure & Orchestration
+    "Infrastructure & Orchestration": [
+        DockerSkillData, GitSkillData, LinuxSkillData, WindowsSkillData,
+        ShellScriptingSkillData,
     ],
-    "System & Low-Level": [ 
-        ShellScriptingSkillData, EmbeddedCSkillData, LinuxSkillData,
+    // 4. Data Science & Storage
+    "Data Layer": [ 
+        SqlSkillData, PandasSkillData, TensorFlowSkillData,
     ],
-    "Tools & Platforms": [
-        SqlSkillData, DockerSkillData, GitSkillData, WindowsSkillData,
+    // 5. Specializations
+    "Specialized": [ 
+        EmbeddedCSkillData,
     ]
 };
 
 const UPDATED_AT = "2025-10";
 
+// --- Category Icon Mapping ---
+const getCategoryIcon = (name) => {
+    switch (name) {
+        case "Dialects": return Code;
+        case "Frameworks & APIs": return LayoutDashboard;
+        case "Data Layer": return Database;
+        case "Infrastructure & Orchestration": return Settings;
+        case "Specialized": return Zap;
+        default: return Code;
+    }
+};
+
 // ===============================================
-// 6. FRAMER MOTION VARIANT (To be used by each SkillCard)
+// 4. FRAMER MOTION VARIANT (Hardened Spring physics)
 // ===============================================
+const getRandomDelay = () => 0.05 + (Math.random() * 0.1 - 0.05);
+
 const skillCardVariants = {
     hidden: { opacity: 0, y: 20, scale: 0.95 },
     visible: { 
@@ -121,60 +130,71 @@ const skillCardVariants = {
         y: 0, 
         scale: 1, 
         transition: { 
-            // Reduced transition duration slightly for snappier stagger
-            duration: 0.3 
+            duration: 0.3, 
+            delay: getRandomDelay(),
+            type: "spring",
+            stiffness: 200,
+            damping: 15,
+            mass: 1.2
         } 
     },
 };
 
 // ===============================================
-// 7. MAIN SKILLS COMPONENT
+// 5. MAIN SKILLS COMPONENT (Revised Title/H3 Tags)
 // ===============================================
 
-function Skills({ id }) { // Added id prop for consistency
+function Skills() {
     const isMobile = useIsMobile(); 
-    
-    // Memoize the array of categories for optimal rendering performance
     const skillCategories = useMemo(() => Object.entries(ALL_SKILLS_DATA), []);
-
+    const [selectedSkill, setSelectedSkill] = useState(null);
     const containerPaddingClass = "px-4 sm:px-6"; 
-
 
     return (
         <section
-            id={id || "skills"}
+            id="skills"
             aria-label="Technical Skills Summary"
             className="min-h-screen pt-20 pb-20 flex flex-col items-center
-                             bg-gray-100 dark:bg-[#131722] transition-colors duration-500"
+                       bg-gray-100 dark:bg-[#131722] transition-colors duration-500"
         >
-            <SectionTitle text="Skills" />
+            <SectionTitle text="Tech Stack Latency // The Arsenal" />
+
+            <AnimatePresence>
+                {selectedSkill && (
+                    <SkillDetailPanel 
+                        skill={selectedSkill} 
+                        onClose={() => setSelectedSkill(null)} 
+                    />
+                )}
+            </AnimatePresence>
 
             <div className={`mt-12 w-full max-w-7xl ${containerPaddingClass} space-y-16`}>
                 {skillCategories.map(([categoryName, skills]) => {
-                    // Use a clean ID derived from the category name
-                    const categoryId = `skill-category-${categoryName.toLowerCase().replace(/[^a-z0-9]/g, '-')}`;
+                    const categoryId = `skill-category-${categoryName.toLowerCase().replace(/\s|&/g, '-')}`;
+                    const CategoryIcon = getCategoryIcon(categoryName); 
 
                     return (
-                        <div 
-                            key={categoryName} 
-                            className="flex flex-col items-center w-full" 
+                        <div 
+                            key={categoryName} 
+                            className="flex flex-col items-center w-full" 
                             role="group"
                             aria-labelledby={categoryId}
                         >
                             {/* Category Title */}
-                            <motion.h2
+                            <motion.h3
                                 id={categoryId}
-                                className="text-3xl font-extrabold text-gray-800 dark:text-gray-100 mb-8 pb-2 
-                                            border-b-4 border-teal-500/50 text-center"
+                                className="flex items-center gap-3 text-2xl font-bold text-gray-800 dark:text-gray-100 mb-8 pb-2 
+                                           border-b-4 border-cyan-500/50 text-center"
                                 initial={{ opacity: 0, y: 20 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true, amount: 0.2 }}
                                 transition={{ duration: 0.6 }}
                             >
+                                <CategoryIcon size={24} className="text-cyan-500 flex-shrink-0" />
                                 {categoryName}
-                            </motion.h2>
+                            </motion.h3>
 
-                            {/* Skills Grid with Staggered Animation */}
+                            {/* Skills Grid - Staggered Animation retained */}
                             <motion.div
                                 className="grid w-full gap-6 grid-cols-3 sm:grid-cols-4 lg:grid-cols-5"
                                 role="list"
@@ -182,18 +202,15 @@ function Skills({ id }) { // Added id prop for consistency
                                 whileInView="visible"
                                 viewport={{ once: true, amount: 0.2 }}
                                 variants={{
-                                    visible: { 
-                                        // Dynamic stagger timing based on device
-                                        transition: { staggerChildren: isMobile ? 0.08 : 0.05 } 
-                                    } 
+                                    visible: { transition: { staggerChildren: isMobile ? 0.08 : 0.05 } } 
                                 }}
                             >
                                 {skills.map((skill) => (
                                     <SkillCard
-                                        // Use skill name as key, since it's the unique identifier for the skill object
-                                        key={skill.name} 
+                                        key={skill.name}
                                         {...skill}
                                         variants={skillCardVariants}
+                                        onSelect={setSelectedSkill}
                                     />
                                 ))}
                             </motion.div>

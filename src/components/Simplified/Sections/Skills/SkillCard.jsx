@@ -1,60 +1,79 @@
-import React, { memo, useMemo } from "react";
+import { memo, useMemo, useState } from "react";
 import { motion } from "framer-motion";
-import { Info } from 'lucide-react'; // Added Info icon for the tooltip hint
+import { FiChevronRight } from 'react-icons/fi';
 
-// SkillCard now accepts the 'description' prop again for the tooltip/popover.
-const SkillCard = memo(({ name, level, icon: Icon, color, variants, description }) => {
+const getLevelClass = (level, isDark) => {
+    switch (level) {
+        case "Expert":
+            return isDark ? "text-green-400" : "text-green-600";
+        case "Intermediate":
+            return isDark ? "text-yellow-400" : "text-yellow-600";
+        case "Familiar":
+            return isDark ? "text-blue-400" : "text-blue-600";
+        default:
+            return isDark ? "text-gray-400" : "text-gray-500";
+    }
+};
 
-    // Memoize the style object to prevent unnecessary re-renders of Icon components.
+const SkillCard = memo(({ name, level, icon: Icon, color, variants, description, onSelect }) => {
+    const [isHovered, setIsHovered] = useState(false);
+    const [latency] = useState(() => Math.floor(Math.random() * 40 + 10) + 'ms');
+    
     const iconStyle = useMemo(() => {
-        // Only apply 'color' if it's not the special HTML & CSS component.
         return name !== "HTML & CSS" ? { color } : {};
     }, [name, color]);
 
-    // Determine level styling for clear visual differentiation
-    const levelStyle = useMemo(() => {
-        switch (level) {
-            case 'Expert':
-                return 'text-green-600 dark:text-green-400';
-            case 'Intermediate':
-                return 'text-yellow-600 dark:text-yellow-400';
-            case 'Familiar':
-                return 'text-blue-600 dark:text-blue-400';
-            default:
-                return 'text-teal-600 dark:text-teal-400';
-        }
-    }, [level]);
+    const levelClass = getLevelClass(level, false);
 
+    const glowInsetClass = "absolute -inset-2 rounded-xl z-0 opacity-0 group-hover:opacity-100";
+    const pulseClass = "animate-pulse-skill";
+
+    const handleClick = () => {
+        onSelect?.({ name, level, icon: Icon, color, description });
+    };
 
     return (
         <motion.div
             variants={variants}
             role="listitem"
             tabIndex={0}
-            
-            // Interactive Effects and Group Class
-            // Added z-index-50 to motion.div to ensure the tooltip is on top of other cards
-            className="relative group w-full focus-within:ring-4 focus-within:ring-teal-400 focus-within:ring-offset-4 
-                        focus-within:ring-offset-gray-100 dark:focus-within:ring-offset-[#131722] rounded-xl cursor-pointer z-20"
-            whileHover={{ scale: 1.05, boxShadow: '0 10px 20px rgba(0,0,0,0.15), 0 6px 10px rgba(0,0,0,0.08)' }} 
-            transition={{ type: "spring", stiffness: 300, damping: 25 }}
+            layoutId={`skill-${name}`}
+            className="relative group w-full focus-within:ring-4 focus-within:ring-cyan-400 
+                       focus-within:ring-offset-4 focus-within:ring-offset-white dark:focus-within:ring-offset-[#131722] 
+                       rounded-xl cursor-pointer"
+            whileHover={{ scale: 1.02 }} 
+            whileTap={{ scale: 0.98 }}
+            onHoverStart={() => setIsHovered(true)}
+            onHoverEnd={() => setIsHovered(false)}
+            onClick={handleClick}
+            transition={{ type: "spring", stiffness: 300, damping: 15 }}
         >
             {/* Dynamic Glow Effect */}
             <div
-                className="absolute -inset-6 rounded-xl blur-3xl z-0 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100
-                            transition-opacity duration-300 pointer-events-none" // Added pointer-events-none
-                style={{ backgroundColor: color || '#86efac', opacity: 0.3 }}
+                className={`${glowInsetClass} ${isHovered ? 'skill-card-glow' : ''} blur-xl transition-all duration-300`}
+                style={{ backgroundColor: color || 'oklch(70% 0.12 140)' }}
             />
 
-            {/* Skill Content Card */}
+            {/* Skill Content Card - Solar Neumorphism */}
             <div
-                className="relative z-10 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg h-full
+                className="relative z-10 bg-white dark:bg-gray-900 p-6 rounded-xl h-full
                              transform transition-all duration-300 flex flex-col items-center justify-center text-center 
-                             border-b-4 border-transparent group-hover:border-teal-400 group-focus-within:border-teal-400 group-hover:shadow-xl"
+                             border-b-4 border-gray-200 dark:border-gray-700 group-hover:border-cyan-500
+                             shadow-[8px_8px_24px_rgba(0,0,0,0.08),-4px_-4px_16px_rgba(255,255,255,1)]
+                             dark:shadow-[0_4px_20px_rgba(6,182,212,0.15)]"
             >
                 {/* Icon Rendering */}
-                <div className="mb-4">
+                <div className="mb-4 relative">
                     <Icon className="w-10 h-10" style={iconStyle} />
+                    {isHovered && (
+                        <motion.span 
+                            className="absolute -top-1 -right-1 text-xs font-mono text-cyan-500"
+                            initial={{ opacity: 0, y: -5 }}
+                            animate={{ opacity: 1, y: 0 }}
+                        >
+                            {latency}ms
+                        </motion.span>
+                    )}
                 </div>
 
                 {/* Name (Title) */}
@@ -62,27 +81,17 @@ const SkillCard = memo(({ name, level, icon: Icon, color, variants, description 
                     {name}
                 </h3>
 
-                {/* Level (Subtitle) */}
-                <p className={`text-sm font-semibold uppercase ${levelStyle}`}>
-                    {level}
+                {/* Level (Subtitle) with L-tier */}
+                <p className={`text-sm ${levelClass} mb-3 font-mono`}>
+                    [{level?.charAt(0).toUpperCase() || 'L1'}]
                 </p>
                 
-                {/* --- Tooltip/Description Popover (NEW) --- */}
-                {description && (
-                    <div 
-                        className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 p-3 w-max max-w-[200px]
-                                   bg-gray-900 text-white text-xs rounded shadow-2xl opacity-0 
-                                   group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-300 pointer-events-none"
-                        aria-hidden={!(name || description)}
-                    >
-                        <Info size={12} className="inline mr-1 text-teal-400" />
-                        {description}
-                        {/* Tooltip arrow */}
-                        <div className="absolute bottom-[-4px] left-1/2 transform -translate-x-1/2 w-2 h-2 bg-gray-900 rotate-45" />
-                    </div>
-                )}
-                {/* -------------------------------------- */}
-
+                {/* Detail Hint */}
+                <p className="text-xs text-gray-400 dark:text-gray-500 mt-2 flex items-center 
+                              opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    Inspect Module 
+                    <FiChevronRight className="w-3 h-3 ml-1 transition-transform group-hover:translate-x-1" />
+                </p>
             </div>
         </motion.div>
     );

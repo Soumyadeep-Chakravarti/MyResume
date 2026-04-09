@@ -1,223 +1,137 @@
-# 🎮 The Animus Project – Interactive Resume Experience
+# Presently under construction
 
-## 🌟 Overview
+## Cinematic Resume Website - Full Documentation
 
-An innovative dual-mode portfolio website that transforms your professional resume into an immersive 3D experience. Inspired by the *Assassin's Creed* Animus, this project bridges reality and simulation through organic transitions and cutting-edge web technologies.
+### Overview
 
----
+The Cinematic Resume Website is a dual-mode interactive portfolio designed to present your professional profile in two distinct experiences:
 
-## 🎭 Two Worlds, One Journey
+1. **Simplified Version**
 
-### 📱 Simplified Mode – "The Reality"
-- **Tech Stack**: React, Tailwind CSS, Framer Motion
-- **Design**: Clean, minimal, professional
-- **Purpose**: Fast-loading, accessible resume for recruiters
-- **Interaction**: Standard vertical scrolling with smooth animations
-- **Performance**: Optimized for quick scanning and mobile devices
+   * Optimized for **fast viewing** and **quick reading**.
+   * Minimal animations for **recruiter-focused scanning**.
+   * Displayed within a **mobile phone mockup** on the website.
+   * Focused on **clarity, speed, and readability**.
 
-### 🏛️ Cinematic Mode – "The Animus Simulation"
-- **Tech Stack**: React Three Fiber (R3F), Drei, GLSL Shaders
-- **Design**: **"Renaissance Ruins in Digital Void"**
-  - **Light Mode**: "The White Room" – Infinite white void with geometric data fog
-  - **Dark Mode**: "The Dark Room" – Deep black void with neon blue/red data streams
-- **Purpose**: Immersive storytelling through a 3D "video game website"
-- **Interaction**: Scroll-driven camera movement along a fixed rail through ancient ruins
-- **Aesthetic**: Realistic stone architecture (Florence/Venice style) being "simulated" by the Animus
+2. **Cinematic Version**
+
+   * Full **movie-like, immersive experience**.
+   * Includes **dynamic animations, interactive section transitions**, and camera-like movements.
+
+Both versions are **optimized and managed for viewing on both mobile and desktop environments**. Users can seamlessly **switch between the two modes** using an **animated toggle**.
 
 ---
 
-## 🌊 The Transition: "The Animus Bleed"
+### Transition Sequence
 
-The magic happens in the transition – a scroll-driven, organic experience that feels alive:
+The transition from the Simplified Version to the Cinematic Version is carefully choreographed to create a cinematic storytelling effect.
 
-1. **Scroll to Synchronize**: As you reach the bottom of the Simplified Resume, you enter the **Transition Zone**
-2. **The Drop**: A **Memory Ink droplet** appears at the center of the screen
-3. **The Spread**: The ink expands organically (like watercolor on parchment) as you continue scrolling
-4. **The Bleed**: The ink "soaks" into the 2D content, blurring and dissolving text and elements
-5. **The Reveal**: The 3D world emerges *inside* the spreading ink blot
-6. **Full Synchronization**: Once the ink saturates the screen, you're transported into the Animus Simulation
+1. **Toggle Activation**
 
-**Key UX Principle**: No buttons. No clicks. Just scroll. The transition is driven entirely by your scroll momentum.
+   * User clicks/taps the animated toggle.
+   * Mobile phone mockup **closes smoothly**.
 
----
+2. **Camera Movement**
 
-## 🏗️ Technical Architecture
+   * Camera **swivels** from the mobile phone to a laptop on the scene.
+   * Smooth pan and rotation simulate a cinematic camera movement.
 
-### Core Technologies
-- **React 18** – UI framework with concurrent features
-- **Vite** – Lightning-fast build tool and dev server
-- **Tailwind CSS** – Utility-first styling system
-- **Framer Motion** – Declarative animations and layout transitions
-- **Lenis** – Smooth scroll library for buttery-smooth scrolling
+3. **Laptop Opening**
 
-### 3D Rendering Stack
-- **React Three Fiber (R3F)** – React renderer for Three.js
-- **@react-three/drei** – Useful helpers and abstractions for R3F
-- **@react-three/rapier** – Physics engine for 3D interactions (optional)
-- **Three.js** – WebGL 3D graphics library
+   * Laptop lid **opens gradually**.
+   * Camera **moves forward** toward the laptop screen.
+   * Laptop screen expands until it **fills the full website viewport**.
 
-### Project Structure
-```
-src/
-├── components/
-│   ├── Simplified/          # 2D Resume components
-│   │   ├── Hero.jsx
-│   │   ├── About.jsx
-│   │   ├── Skills.jsx
-│   │   ├── Projects.jsx
-│   │   └── Contact.jsx
-│   ├── Cinematic/           # 3D World components (R3F)
-│   │   ├── CameraContainer.jsx
-│   │   ├── SceneGate.jsx    # Hero section
-│   │   ├── SceneArchive.jsx # About section
-│   │   ├── SceneObelisks.jsx # Skills section
-│   │   ├── ScenePlaza.jsx   # Projects section
-│   │   └── SceneBeacon.jsx  # Contact section
-│   └── Transition/          # Animus Bleed effects
-│       ├── ScrollTransitionZone.jsx
-│       └── InkBlotOverlay.jsx
-├── context/
-│   └── CinematicModeContext.jsx  # Mode state management
-├── hooks/
-│   ├── useSmoothScroll.js        # Lenis integration
-│   └── useMouseTilt.js           # Camera tilt effect
-└── MainContent.jsx               # Root layout orchestrator
-```
+4. **Cinematic Resume Launch**
+
+   * The cinematic resume animations begin once the laptop screen fills the view.
+   * Features include:
+
+     * **Dynamic section transitions** (About, Skills, Projects, Contact)
+     * **Interactive effects** (hover, clicks, or scroll-based animations)
+     * **Camera-like panning and zooming** across sections
 
 ---
 
-## 🎨 Design Philosophy
+### Visual Metaphor
 
-### "Keep it Real"
-The transition should feel **organic and alive**, not mechanical. The ink bleed mimics real watercolor spreading on parchment – erratic, unpredictable, beautiful.
-
-### "Video Game Website"
-The Cinematic mode is not just "3D slides" – it's a **world to explore**. You move through ancient ruins, with depth, parallax, and interactive elements that respond to your mouse.
-
-### "Rail-Based Exploration"
-Scroll controls forward/backward movement along a fixed path (the "rail"). Mouse movement adds subtle camera tilt and brings interactive elements into focus – like a handheld camera or drone.
-
-### "Performance First"
-- Heavy 3D assets are **lazy-loaded** only when the transition begins
-- GPU-friendly transforms only (`translate`, `scale`, `rotate`, `opacity`)
-- Instanced meshes for repeating architectural elements
-- Respects `prefers-reduced-motion` for accessibility
+* **Mobile Phone / Simplified Mode**: Fast reading, recruiter-focused.
+* **Laptop / Cinematic Mode**: Immersive cinematic experience with storytelling animations.
+* **Camera Motion**: Bridges the gap between simplified and cinematic depth.
 
 ---
 
-## 🚀 Getting Started
+### Components Structure
 
-### Prerequisites
-- **Node.js** v18 or higher
-- **npm** or **yarn**
+* `components/SimplifiedResume.jsx` → Simplified version.
+* `components/CinematicResume.jsx` → Cinematic version.
+* `components/ToggleSwitch.jsx` → Handles mode switching and triggers animations.
 
-### Installation
-```bash
-# Clone the repository
-git clone <repository-url>
-cd MyResume
+#### Component Responsibilities
 
-# Install dependencies
-npm install
-```
+* **SimplifiedResume**:
 
-### Development
-```bash
-# Start the development server
-npm run dev
+  * Render the phone mockup.
+  * Show minimal, readable sections.
+  * Ensure **fast loading** and **readable layout**.
 
-# Open http://localhost:5173 in your browser
-```
+* **CinematicResume**:
 
-### Build for Production
-```bash
-# Create optimized production build
-npm run build
+  * Render sections with cinematic transitions.
+  * Control camera movement, zoom, and section animation timing.
+  * Maintain **responsive and interactive behavior**.
 
-# Preview production build locally
-npm run preview
-```
+* **ToggleSwitch**:
+
+  * Animates the mode switch.
+  * Handles **state management** between Simplified and Cinematic modes.
+  * Triggers camera and scene transition animations.
 
 ---
 
-## 🗺️ Cinematic World Map
+### Implementation Notes
 
-The 3D world is structured as a linear journey through five distinct scenes:
-
-| Section | Scene Name | Metaphor | Visual Elements |
-|---------|-----------|----------|-----------------|
-| **Hero** | The Gate | Entrance Plaza | Name appears as glowing glyphs. Camera moves through a massive archway. |
-| **About** | The Archive Hall | Corridor of Ruins | Bio appears on a rising "Stone Tablet" with dust particles. |
-| **Skills** | The Obelisks | Tech Sigils | Obelisks light up from base to top. Hover = focus + glow. |
-| **Projects** | The Plaza | Ruined Central Square | Projects appear as "Relics" on rising pedestals. Cards tilt toward camera. |
-| **Contact** | The Beacon | Tower Ascent | Final ascent toward a glowing beacon. Contact form shines as transmitted signal. |
+* Use **Framer Motion** or **Three.js** for smooth animations.
+* Ensure **performance optimization** during transitions and heavy animations.
+* Make both modes **fully responsive** across devices.
+* Consider **lazy-loading cinematic assets** to reduce initial load time.
+* Maintain accessibility: Simplified version ensures screen readers and keyboard navigation work properly.
 
 ---
 
-## 🎯 Current Status
+### User Flow
 
-### ✅ Completed
-- Simplified Resume with all sections
-- Basic Cinematic Mode structure with R3F
-- Scroll-driven transition zone
-- Animus Bleed ink effect with organic expansion
-- Theme-aware ink color (white/black based on mode)
-- Context-based mode switching
+1. User lands on the website, sees the **Simplified Resume** inside a phone mockup.
+2. User toggles the switch:
 
-### 🚧 In Progress
-- Refining ink blot organic distortion
-- Building individual cinematic scenes (Obelisks, Plaza, etc.)
-- Camera tilt and mouse interaction
-- 3D asset creation and optimization
+   * Mobile phone closes.
+   * Camera pans to laptop.
+   * Laptop opens.
+   * Cinematic Resume begins.
+3. User interacts with Cinematic Resume:
 
-### 📋 Planned
-- Physics-based interactions
-- Sound design and ambient audio
-- Advanced particle effects
-- Mobile-optimized 3D experience
+   * Scrolls through sections.
+   * Experiences smooth transitions and dynamic animations.
+4. User can toggle back to **Simplified Mode** at any point.
 
 ---
 
-## 🎨 Theming
+### Future Enhancements
 
-### Light Mode – "The White Room"
-- Infinite white void background
-- Geometric data fog (subtle wireframes)
-- Black ink bleed transition
-- Clean, clinical Animus aesthetic
-
-### Dark Mode – "The Dark Room"
-- Deep black void background
-- Neon blue/red data streams
-- White ink bleed transition
-- Cyberpunk Animus aesthetic
+* Add **sound effects** or subtle background music for cinematic immersion.
+* Incorporate **3D interactions** for laptop and phone models.
+* Track **user engagement** with each section to refine experience.
+* Add **theming options**: light, dark, and cinematic themes.
+* Expand **mobile cinematic adaptation** for tablets.
 
 ---
 
-## ♿ Accessibility
+### Conclusion
 
-- **Reduced Motion**: Respects `prefers-reduced-motion` media query
-  - Disables camera tilt
-  - Simplifies scroll animations
-  - Replaces particle effects with basic fades
-- **Keyboard Navigation**: Full keyboard support for all interactive elements
-- **Screen Readers**: Semantic HTML and ARIA labels throughout
-- **Color Contrast**: WCAG AA compliant color combinations
+The Cinematic Resume Website combines **functionality and storytelling**:
 
----
+* **Simplified Version**: for fast reading and recruiter access.
+* **Cinematic Version**: for an immersive, memorable showcase of your skills and experience.
 
-## 📄 License
+By seamlessly transitioning between these modes, it provides an **innovative and engaging resume experience** that works well across both mobile and desktop environments.
 
-This project is a personal portfolio. Feel free to use the code as inspiration, but please don't copy the content directly.
-
----
-
-## 🙏 Acknowledgments
-
-- Inspired by the *Assassin's Creed* series and the Animus concept
-- Built with amazing open-source tools from the React and Three.js communities
-- Special thanks to the R3F team for making 3D on the web accessible
-
----
-
-**Ready to synchronize?** Scroll down and let the Animus Bleed begin. 🌊

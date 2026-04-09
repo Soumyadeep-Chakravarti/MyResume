@@ -1,20 +1,18 @@
-/* src/components/DynamicBackground/Aquarium.css */
-
-.aquarium-ball {
-  /* VISUALS ONLY: Define appearance, handled by JS */
+.aquarium-mote,
+.aquarium-firefly {
   position: absolute;
-  border-radius: 50%;
-  
-  /* Appearance styling */
-  background: radial-gradient(circle, rgba(100,200,255,0.6) 0%, rgba(100,200,255,0.1) 100%);
-  
-  /* OPTIMIZATION: Tell the browser that 'transform' will be animated */
-  will-change: transform;
-  
-  /* MISC: Ensure correct layering and interaction */
+  will-change: transform, opacity;
   z-index: 0;
   pointer-events: none;
-  
-  /* REMOVED: width and height are set dynamically by JS based on constants */
-  /* REMOVED: animation property is removed, as JS controls the position */
+}
+
+.aquarium-firefly {
+  filter: blur(0.5px);
+}
+
+.aquarium-ball {
+  position: absolute;
+  will-change: transform;
+  z-index: 0;
+  pointer-events: none;
 }

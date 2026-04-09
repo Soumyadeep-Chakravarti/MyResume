@@ -15,25 +15,32 @@
  * These will be the default (light mode) values.
  */
 @theme {
-  --color-background: oklch(98% 0 0); /* Very light off-white */
-  --color-text-primary: oklch(20% 0.005 280); /* Dark text */
-  --color-text-secondary: oklch(40% 0.005 280); /* Slightly lighter dark text */
+  --color-background: oklch(98% 0.01 80);
+  --color-text-primary: oklch(25% 0.02 160);
+  --color-text-secondary: oklch(45% 0.02 160);
 
-  --color-primary: oklch(60% 0.25 260); /* Vibrant Blue */
-  --color-primary-hover: oklch(55% 0.26 260); /* Darker blue for hover */
+  --color-primary: oklch(70% 0.12 140);
+  --color-primary-hover: oklch(65% 0.13 140);
 
-  --color-secondary: oklch(70% 0.2 60); /* Warm Orange */
-  --color-secondary-hover: oklch(65% 0.21 60); /* Darker orange for hover */
+  --color-secondary: oklch(85% 0.08 100);
+  --color-secondary-hover: oklch(80% 0.1 100);
 
-  --color-accent: oklch(75% 0.183 55.934); /* Orange-400 equivalent */
-  --color-accent-dark: oklch(70.5% 0.213 47.604); /* Orange-500 equivalent */
+  --color-accent: oklch(60% 0.15 120);
+  --color-accent-dark: oklch(85% 0.15 90);
 
-  --color-card-background: oklch(100% 0 0); /* White for card backgrounds */
-  --color-border: oklch(80% 0.005 280); /* Light border */
+  --color-card-background: oklch(100% 0 0);
+  --color-border: oklch(85% 0.01 80);
 
-  /* Gradient colors for Hero section */
-  --gradient-hero-from: oklch(96.7% 0.003 264.542); /* gray-100 */
-  --gradient-hero-to: oklch(92.8% 0.006 264.531);   /* gray-200 */
+  --gradient-hero-from: oklch(98% 0.005 80);
+  --gradient-hero-to: oklch(94% 0.008 80);
+
+  --color-silver: oklch(65% 0.06 180);
+  --color-slate-muted: oklch(45% 0.08 180);
+  
+  --shadow-solar: 20px 20px 60px #c5d5c8, -20px -20px 60px #ffffff;
+  --shadow-solar-card: 8px 8px 24px #c5d5c8, -8px -8px 24px #ffffff;
+  
+  --gradient-solar: radial-gradient(circle at 80% 20%, oklch(92% 0.06 120) 0%, transparent 50%);
 }
 
 /*
@@ -42,25 +49,31 @@
  */
 @layer theme {
   .dark {
-    --color-background: oklch(15% 0.005 280); /* Dark background */
-    --color-text-primary: oklch(90% 0.005 280); /* Light text */
-    --color-text-secondary: oklch(70% 0.005 280); /* Slightly darker light text */
+    --color-background: oklch(12% 0.02 160);
+    --color-text-primary: oklch(88% 0.02 160);
+    --color-text-secondary: oklch(70% 0.02 160);
 
-    --color-primary: oklch(70% 0.25 260); /* Lighter Blue for dark mode */
-    --color-primary-hover: oklch(65% 0.26 260); /* Slightly darker for hover */
+    --color-primary: oklch(70% 0.15 130);
+    --color-primary-hover: oklch(65% 0.16 130);
 
-    --color-secondary: oklch(75% 0.2 60); /* Lighter Orange for dark mode */
-    --color-secondary-hover: oklch(70% 0.21 60); /* Slightly darker for hover */
+    --color-secondary: oklch(85% 0.12 90);
+    --color-secondary-hover: oklch(80% 0.13 90);
 
-    --color-accent: oklch(80% 0.183 55.934); /* Lighter Orange-400 equivalent */
-    --color-accent-dark: oklch(75.5% 0.213 47.604); /* Lighter Orange-500 equivalent */
+    --color-accent: oklch(85% 0.15 90);
+    --color-accent-dark: oklch(75% 0.18 85);
 
-    --color-card-background: oklch(20% 0.005 280); /* Darker card backgrounds */
-    --color-border: oklch(30% 0.005 280); /* Dark border */
+    --color-card-background: oklch(18% 0.03 160);
+    --color-border: oklch(30% 0.03 160);
 
-    /* Gradient colors for Hero section in dark mode */
-    --gradient-hero-from: oklch(27.8% 0.033 256.848); /* gray-800 */
-    --gradient-hero-to: oklch(21% 0.034 264.665);   /* gray-900 */
+    --gradient-hero-from: oklch(15% 0.04 160);
+    --gradient-hero-to: oklch(10% 0.05 160);
+
+    --color-silver: oklch(55% 0.06 140);
+    --color-slate-muted: oklch(35% 0.08 140);
+    
+    --shadow-solar: 0 0 20px oklch(85% 0.15 90 / 0.3), 0 0 40px oklch(85% 0.15 90 / 0.1);
+    --shadow-solar-card: 0 4px 20px oklch(85% 0.15 90 / 0.2);
+    --gradient-solar: radial-gradient(circle at 80% 20%, oklch(25% 0.06 130) 0%, transparent 50%);
   }
 }
 
@@ -87,12 +100,15 @@ html {
 
 body {
   min-width: 320px;
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
   color: var(--color-text-primary); /* Dynamic text color */
   transition: color 0.5s ease-in-out;
   background-color: var(--color-background);
   transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;
-  position: relative
+}
+
+code, pre, .font-mono {
+  font-family: 'JetBrains Mono', monospace;
 }
 
 /* Optional: smooth scroll */
@@ -123,19 +139,39 @@ button {
   border: none;
 }
 
-/* Hide the scrollbar visual elements provided by the Lenis library */
-.lenis.lenis-smooth {
-    /* Hides the default system scrollbar if it appears */
-    scrollbar-width: none; 
+.breathing-container {
+  animation: breathe 10s ease-in-out infinite;
 }
-.lenis-scrollbar {
-    /* Hides the custom scrollbar track and thumb */
-    display: none !important;
-    opacity: 0 !important;
+
+@keyframes breathe {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-2px) rotate(0.3deg);
+  }
+  50% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  75% {
+    transform: translateY(2px) rotate(-0.3deg);
+  }
 }
-/* For Chrome/Safari/Edge compatibility (if needed) */
-.lenis.lenis-smooth::-webkit-scrollbar {
-    display: none;
-    width: 0;
-    height: 0;
+
+@keyframes pulse-skill {
+  0%, 100% {
+    box-shadow: 0 0 0 0 oklch(70% 0.15 100 / 0.4);
+  }
+  50% {
+    box-shadow: 0 0 20px 5px oklch(70% 0.15 100 / 0.2);
+  }
+}
+
+.dark .skill-card-glow {
+  background: radial-gradient(circle, oklch(85% 0.15 90 / 0.5) 0%, transparent 70%);
+}
+
+.skill-card-glow {
+  background: radial-gradient(circle, oklch(70% 0.12 140 / 0.5) 0%, transparent 70%);
+  animation: pulse-skill 2s ease-in-out infinite;
 }
