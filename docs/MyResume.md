@@ -1,3 +1,14 @@
+---
+created: 2026-05-24
+modified: 2026-06-01
+type: project
+tags:
+  - projects
+  - myresume
+  - moc
+status: seedling
+---
+
 # MyResume
 
 **Description:** Full-Spectrum Software Architect portfolio with dual-mode interactive experience.
@@ -28,3 +39,10 @@ Two distinct viewing modes:
 - GitHub API integration
 - Client-side caching
 - Responsive design (mobile + desktop)
+
+## See also
+
+- [[Project Notes|Projects]]
+- [[Project Overview|Project Overview]]
+- [[Architecture|ENKI Architecture v2 — The Two-Layer Split]]
+- [[Nexus - Project Structure & Tooling|Nexus - Project Structure & Tooling Specification]]
