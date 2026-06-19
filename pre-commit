@@ -1,0 +1,15 @@
+#!/bin/sh
+echo "Running custom pre-commit checks..."
+
+# Example: Prevent committing TODOs (warning only, won't block)
+if git diff --cached --name-only | xargs grep -Hn 'TODO' 2>/dev/null; then
+    echo "⚠️  Warning: TODO comments found in staged changes."
+fi
+
+# Example: Prevent committing hardcoded secrets (blocks commit)
+if git diff --cached | grep -I -n -i -E "(key|secret|token|password)\s*[:=]\s*['\"]?[ A-Za-z0-9/+=._-]+"; then
+    echo "❌ Commit aborted: Hardcoded secret detected!"
+    exit 1
+fi
+
+exit 0
