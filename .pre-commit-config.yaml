@@ -1,6 +1,18 @@
 repos:
--   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v3.2.0
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
     hooks:
-    -   id: trailing-whitespace
-    -   id: end-of-file-fixer
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
+        args: ['--maxkb=500']
+
+  - repo: local
+    hooks:
+      - id: typecheck
+        name: typecheck
+        entry: npx tsc --noEmit
+        language: system
+        files: '\.(ts|tsx)$'
+        pass_filenames: false
